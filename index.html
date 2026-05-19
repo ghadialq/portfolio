@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghadi Alqhtani — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --void: #06040f;
+    --deep: #0d0820;
+    --plum: #1a0f35;
+    --neon-purple: #9b5de5;
+    --neon-pink: #f72585;
+    --neon-blue: #4cc9f0;
+    --neon-gold: #ffd166;
+    --soft-lavender: #c8b8f8;
+    --text: #f0eaff;
+    --muted: #9488b8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--neon-pink);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-trail {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(155,93,229,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transition: all 0.25s ease;
+  }
+
+  /* Canvas background */
+  #bg-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+
+  /* Ambient blobs */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+    animation: float 12s ease-in-out infinite;
+  }
+  .blob-1 { width: 600px; height: 600px; background: var(--neon-purple); top: -200px; left: -100px; animation-delay: 0s; }
+  .blob-2 { width: 500px; height: 500px; background: var(--neon-pink); bottom: -200px; right: -100px; animation-delay: -4s; }
+  .blob-3 { width: 400px; height: 400px; background: var(--neon-blue); top: 40%; left: 50%; animation-delay: -8s; }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -40px) scale(1.05); }
+    66% { transform: translate(-20px, 30px) scale(0.95); }
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    backdrop-filter: blur(20px);
+    background: rgba(6,4,15,0.6);
+    border-bottom: 1px solid rgba(155,93,229,0.1);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    background: linear-gradient(135deg, var(--soft-lavender), var(--neon-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--soft-lavender); }
+
+  /* Sections */
+  section { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--neon-pink);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.3s;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(5rem, 14vw, 12rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.5s;
+  }
+  .hero-name .line-1 {
+    display: block;
+    background: linear-gradient(135deg, #fff 0%, var(--soft-lavender) 50%, var(--neon-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-name .line-2 {
+    display: block;
+    font-style: italic;
+    background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-purple) 60%, var(--neon-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-tagline {
+    margin-top: 2.5rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    max-width: 420px;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.9s;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.5s;
+  }
+  .hero-scroll span {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--neon-purple), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* ── ABOUT ── */
+  .about {
+    padding: 8rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .about-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--neon-pink);
+    margin-bottom: 1.5rem;
+  }
+  .about-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+  .about-title em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .about-body {
+    color: var(--muted);
+    line-height: 1.9;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .stat {
+    padding: 1.5rem;
+    border: 1px solid rgba(155,93,229,0.2);
+    border-radius: 12px;
+    background: rgba(155,93,229,0.05);
+    backdrop-filter: blur(10px);
+  }
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--neon-gold), var(--neon-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .skills-cloud {
+    display: flex; flex-wrap: wrap; gap: 0.75rem;
+  }
+  .skill-tag {
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    border: 1px solid;
+    transition: all 0.3s;
+  }
+  .skill-tag:nth-child(3n+1) { border-color: rgba(155,93,229,0.4); color: var(--soft-lavender); background: rgba(155,93,229,0.08); }
+  .skill-tag:nth-child(3n+2) { border-color: rgba(247,37,133,0.4); color: #f7b8d0; background: rgba(247,37,133,0.08); }
+  .skill-tag:nth-child(3n+3) { border-color: rgba(76,201,240,0.4); color: #a8e9fa; background: rgba(76,201,240,0.08); }
+  .skill-tag:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(155,93,229,0.2); }
+
+  /* ── PROJECTS ── */
+  .projects {
+    padding: 6rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-header {
+    display: flex; align-items: baseline; gap: 2rem;
+    margin-bottom: 4rem;
+    border-bottom: 1px solid rgba(155,93,229,0.15);
+    padding-bottom: 2rem;
+  }
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--neon-pink);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 300;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    position: relative;
+    border: 1px solid rgba(155,93,229,0.15);
+    border-radius: 20px;
+    padding: 2.5rem;
+    background: rgba(26,15,53,0.4);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: none;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(155,93,229,0.08), rgba(247,37,133,0.05));
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .project-card:hover { transform: translateY(-6px); border-color: rgba(155,93,229,0.4); }
+  .project-card:hover::before { opacity: 1; }
+
+  .card-wide { grid-column: span 7; }
+  .card-narrow { grid-column: span 5; }
+  .card-third { grid-column: span 4; }
+  .card-full { grid-column: span 12; }
+
+  .project-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--neon-pink);
+    margin-bottom: 2rem;
+    opacity: 0.7;
+  }
+  .project-category {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .project-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff, var(--soft-lavender));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .project-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .project-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .project-tag {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    background: rgba(155,93,229,0.12);
+    border: 1px solid rgba(155,93,229,0.25);
+    color: var(--soft-lavender);
+  }
+  .project-role {
+    font-size: 0.72rem;
+    color: var(--neon-gold);
+    letter-spacing: 0.08em;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .project-role::before {
+    content: '';
+    display: inline-block;
+    width: 20px; height: 1px;
+    background: var(--neon-gold);
+  }
+
+  .card-accent {
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.08;
+    pointer-events: none;
+    bottom: -60px; right: -60px;
+  }
+  .acc-purple { background: var(--neon-purple); }
+  .acc-pink { background: var(--neon-pink); }
+  .acc-blue { background: var(--neon-blue); }
+  .acc-gold { background: var(--neon-gold); }
+
+  /* ── CERTS & CLUBS ── */
+  .extras {
+    padding: 6rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+  .extras-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+  .cert-item, .club-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(155,93,229,0.1);
+  }
+  .cert-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+    background: rgba(155,93,229,0.12);
+    border: 1px solid rgba(155,93,229,0.2);
+  }
+  .cert-name {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .cert-year {
+    font-size: 0.7rem;
+    color: var(--neon-purple);
+    letter-spacing: 0.1em;
+    margin-top: 0.25rem;
+  }
+
+  /* ── CONTACT ── */
+  .contact {
+    padding: 8rem 4rem;
+    text-align: center;
+    position: relative;
+  }
+  .contact-glow {
+    position: absolute;
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(155,93,229,0.15), transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .contact-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--neon-pink);
+    margin-bottom: 2rem;
+  }
+  .contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 300;
+    line-height: 0.95;
+    margin-bottom: 3rem;
+  }
+  .contact-title em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink), var(--neon-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .contact-links {
+    display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
+  }
+  .contact-link {
+    padding: 0.9rem 2.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .contact-link.primary {
+    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+    color: #fff;
+  }
+  .contact-link.primary:hover { transform: scale(1.04); box-shadow: 0 0 30px rgba(155,93,229,0.4); }
+  .contact-link.secondary {
+    border: 1px solid rgba(155,93,229,0.3);
+    color: var(--soft-lavender);
+    backdrop-filter: blur(10px);
+  }
+  .contact-link.secondary:hover { border-color: rgba(155,93,229,0.7); background: rgba(155,93,229,0.1); }
+
+  /* Footer */
+  footer {
+    padding: 2rem 4rem;
+    border-top: 1px solid rgba(155,93,229,0.1);
+    display: flex; justify-content: space-between; align-items: center;
+    position: relative; z-index: 1;
+  }
+  footer p {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Divider line */
+  .divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(155,93,229,0.3), transparent);
+    position: relative; z-index: 1;
+    margin: 0 4rem;
+    width: calc(100% - 8rem);
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursor-trail"></div>
+
+<canvas id="bg-canvas"></canvas>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">G · A</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">HCI Designer · Game Artist · Developer</p>
+  <h1 class="hero-name">
+    <span class="line-1">Ghadi</span>
+    <span class="line-2">Alqhtani</span>
+  </h1>
+  <p class="hero-tagline">Crafting experiences that live at the intersection of design, emotion, and technology.</p>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="reveal">
+    <p class="about-label">About</p>
+    <h2 class="about-title">Design is<br><em>a language</em><br>I speak fluently.</h2>
+    <p class="about-body">3rd-year Human-Computer Interaction student at Umm Al-Qura University. I work across UX/UI design, game design, motion graphics, and front-end development — always drawn to the feeling a well-crafted experience creates.</p>
+    <p class="about-body">From pixel art to information architecture, I believe every detail carries intention.</p>
+    <div class="about-stats">
+      <div class="stat">
+        <div class="stat-number">5+</div>
+        <div class="stat-label">Projects Shipped</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">3.4</div>
+        <div class="stat-label">GPA / 4.0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">10</div>
+        <div class="stat-label">Days — Pillow Castle</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">80+</div>
+        <div class="stat-label">Research Participants</div>
+      </div>
+    </div>
+  </div>
+  <div class="reveal">
+    <p class="about-label" style="margin-bottom:1.5rem;">Skills</p>
+    <div class="skills-cloud">
+      <span class="skill-tag">Figma</span>
+      <span class="skill-tag">Adobe Photoshop</span>
+      <span class="skill-tag">Adobe Illustrator</span>
+      <span class="skill-tag">After Effects</span>
+      <span class="skill-tag">UX Research</span>
+      <span class="skill-tag">Information Architecture</span>
+      <span class="skill-tag">Usability Testing</span>
+      <span class="skill-tag">Card Sorting</span>
+      <span class="skill-tag">Tree Testing</span>
+      <span class="skill-tag">Flutter · Dart</span>
+      <span class="skill-tag">HTML · CSS · JS</span>
+      <span class="skill-tag">Firebase</span>
+      <span class="skill-tag">SQL</span>
+      <span class="skill-tag">Java</span>
+      <span class="skill-tag">Game Design</span>
+      <span class="skill-tag">Pixel Art</span>
+      <span class="skill-tag">2D Animation</span>
+      <span class="skill-tag">Motion Graphics</span>
+      <span class="skill-tag">Visual Design</span>
+      <span class="skill-tag">Interaction Design</span>
+      <span class="skill-tag">Wireframing</span>
+      <span class="skill-tag">Unity (Beginner)</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="section-header reveal">
+    <span class="section-label">Selected Work</span>
+    <h2 class="section-title">Projects</h2>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- Pillow Castle — featured wide -->
+    <a href="https://lammelione.itch.io/pillow-castle" target="_blank" class="project-card card-wide reveal" style="text-decoration:none;">
+      <div class="card-accent acc-pink"></div>
+      <div class="project-number">01 — Click to View ↗</div>
+      <p class="project-category">Game Design · Pixel Art · Game Jam</p>
+      <h3 class="project-title">Pillow Castle</h3>
+      <p class="project-desc">A short 2D pixel art game built in exactly 10 days for SheJams 2025. Two endings, original illustrations, time-pressure mechanics, and the nostalgic rush of building a pillow fort before mama cleans up. Shipped with a 5-person multidisciplinary team and published on itch.io.</p>
+      <div class="project-tags">
+        <span class="project-tag">Game Design</span>
+        <span class="project-tag">Pixel Art</span>
+        <span class="project-tag">GDD</span>
+        <span class="project-tag">SheJams 2025</span>
+        <span class="project-tag">itch.io</span>
+      </div>
+      <p class="project-role">Game Designer & Pixel Artist</p>
+    </a>
+
+    <!-- IA Marsool -->
+    <a href="https://drive.google.com/file/d/1aa-miLPS_rr4WhGuPbIQdSCxSg0YD-lF/view?usp=sharing" target="_blank" class="project-card card-narrow reveal" style="text-decoration:none;">
+      <div class="card-accent acc-blue"></div>
+      <div class="project-number">02 — Click to View ↗</div>
+      <p class="project-category">Information Architecture · UX Research</p>
+      <h3 class="project-title">IA Redesign — Marsool</h3>
+      <p class="project-desc">3-phase IA study on the Marsool grocery delivery app. Surveyed 80+ users, ran card sorting sessions, performed tree testing via UX Tweak, and redesigned the navigation sitemap and wireframes.</p>
+      <div class="project-tags">
+        <span class="project-tag">Card Sorting</span>
+        <span class="project-tag">Tree Testing</span>
+        <span class="project-tag">Wireframing</span>
+        <span class="project-tag">Competitive Analysis</span>
+      </div>
+      <p class="project-role">IA Designer & UX Researcher</p>
+    </a>
+
+    <a href="https://www.figma.com/design/6K4PDmwMUJ0x5uS0XlVUqU/Better-Expense?node-id=0-1&p=f&t=2uUN5NCQTiQHr69M-0" target="_blank" class="project-card card-third reveal" style="text-decoration:none;">
+      <div class="card-accent acc-gold"></div>
+      <div class="project-number">03 — Click to View ↗</div>
+      <p class="project-category">UI/UX Design · Figma</p>
+      <h3 class="project-title">Better Expense</h3>
+      <p class="project-desc">End-to-end mobile UI for a personal finance app. From wireframes to high-fidelity Figma prototype — budget dashboards, expense tracking, and financial reports.</p>
+      <div class="project-tags">
+        <span class="project-tag">Figma</span>
+        <span class="project-tag">Mobile UX</span>
+        <span class="project-tag">Prototyping</span>
+      </div>
+      <p class="project-role">UI/UX Designer</p>
+    </a>
+
+    <!-- Gaming Guide -->
+    <a href="https://drive.google.com/file/d/1cjfwC8LjPH84S0KfD9ptdZcoa5u6LXVf/view?usp=drive_link" target="_blank" class="project-card card-third reveal" style="text-decoration:none;">
+      <div class="card-accent acc-blue"></div>
+      <div class="project-number">04 — Click to View ↗</div>
+      <p class="project-category">Web Design · Front-End Dev</p>
+      <h3 class="project-title">Gaming Guide</h3>
+      <p class="project-desc">An 8-page gaming platform with login, community, leaderboard, and stats pages. Custom pixel typography, cohesive visual system, and interactive front-end features.</p>
+      <div class="project-tags">
+        <span class="project-tag">HTML · CSS · JS</span>
+        <span class="project-tag">Visual Design</span>
+        <span class="project-tag">Web Dev</span>
+      </div>
+      <p class="project-role">Web Designer & Developer</p>
+    </a>
+
+    <!-- Expense System -->
+    <a href="https://drive.google.com/file/d/1f7QHxVlY1OReEgHz-uT1Nyqfib3xu14M/view?usp=drive_link" target="_blank" class="project-card card-third reveal" style="text-decoration:none;">
+      <div class="card-accent acc-purple"></div>
+      <div class="project-number">05 — Click to View ↗</div>
+      <p class="project-category">UX Analysis · Systems Design</p>
+      <h3 class="project-title">Personal Expense System</h3>
+      <p class="project-desc">Requirements engineering for a mobile budget management app. Authored FR05–08, designed Active Repository Architecture, and contributed to UML Use Case Diagram.</p>
+      <div class="project-tags">
+        <span class="project-tag">UML</span>
+        <span class="project-tag">Requirements Eng.</span>
+        <span class="project-tag">System Architecture</span>
+      </div>
+      <p class="project-role">Requirements Engineer & UX Analyst</p>
+    </a>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ACTIVITIES ONLY -->
+<section class="extras" id="extras">
+  <div class="reveal" style="grid-column: span 2; margin-bottom: 1rem;">
+    <h2 class="extras-title">Extracurricular Activities</h2>
+  </div>
+  <div class="reveal">
+    <a href="https://drive.google.com/drive/folders/1L4G4Y-wyaWr2hF30eRvTpkjT4sKaNxQQ?usp=drive_link" target="_blank" class="club-item" style="text-decoration:none; color:inherit; display:flex; align-items:flex-start; gap:1rem; padding:1.25rem 0; border-bottom:1px solid rgba(155,93,229,0.1);">
+      <div class="cert-icon">🎨</div>
+      <div>
+        <div class="cert-name">Media & Graphic Designer — Computer Club, UQU ↗</div>
+        <div class="cert-year">2024 – Present</div>
+      </div>
+    </a>
+    <a href="https://drive.google.com/drive/folders/1IwGmMXI2bZOHelEacTHTtg_dnHmoiTQZ?usp=drive_link" target="_blank" class="club-item" style="text-decoration:none; color:inherit; display:flex; align-items:flex-start; gap:1rem; padding:1.25rem 0; border-bottom:1px solid rgba(155,93,229,0.1);">
+      <div class="cert-icon">📰</div>
+      <div>
+        <div class="cert-name">Newsletter Designer — Al-Hasouby, Computer Club ↗</div>
+        <div class="cert-year">2024 – Present</div>
+      </div>
+    </a>
+  </div>
+  <div class="reveal">
+    <div class="club-item">
+      <div class="cert-icon">🕹️</div>
+      <div>
+        <div class="cert-name">Game Designer & Developer — Game Developers Club, UQU</div>
+        <div class="cert-year">2025 – Present</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-glow"></div>
+  <p class="contact-label reveal">Let's Connect</p>
+  <h2 class="contact-title reveal">
+    Let's build<br><em>something</em><br>together.
+  </h2>
+  <div class="contact-links reveal">
+    <a class="contact-link primary" href="mailto:ghadi.alqhtaini@gmail.com">ghadi.alqhtaini@gmail.com</a>
+    <a class="contact-link secondary" href="#">+966 50 606 4022</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Ghadi Alqhtani</p>
+  <p>HCI · UQU · Mecca, Saudi Arabia</p>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const trail = document.getElementById('cursor-trail');
+  let mx = 0, my = 0, tx = 0, ty = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 6 + 'px';
+    cursor.style.top  = my - 6 + 'px';
+  });
+  (function animTrail() {
+    tx += (mx - tx) * 0.12;
+    ty += (my - ty) * 0.12;
+    trail.style.left = tx - 18 + 'px';
+    trail.style.top  = ty - 18 + 'px';
+    requestAnimationFrame(animTrail);
+  })();
+
+  // Glitter canvas
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const colors = ['#9b5de5','#f72585','#4cc9f0','#ffd166','#c8b8f8'];
+
+  for (let i = 0; i < 120; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: Math.random() * 0.5 + 0.1,
+      twinkle: Math.random() * Math.PI * 2
+    });
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, W, H);
+    const t = Date.now() * 0.001;
+    particles.forEach(p => {
+      p.twinkle += 0.02;
+      const alpha = p.alpha * (0.5 + 0.5 * Math.sin(p.twinkle));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + Math.round(alpha * 255).toString(16).padStart(2,'0');
+      ctx.fill();
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = W;
+      if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H;
+      if (p.y > H) p.y = 0;
+    });
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
