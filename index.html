@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ghadi Alqhtani, Portfolio</title>
-<meta name="description" content="Portfolio of Ghadi Alqhtani, HCI student, UX/UI designer, pixel artist and game developer.">
+<meta name="description" content="Portfolio of Ghadi Alqhtani: HCI student, UX/UI designer, pixel artist and game designer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
@@ -14,9 +14,6 @@
   :root {
     --black: #000;
     --white: #fff;
-    --glitch-c: #00ffff;
-    --glitch-m: #ff00ff;
-    --glitch-y: #ffff00;
     --display: 'Pixelify Sans', 'Courier New', monospace;
     --body: 'VT323', 'Courier New', monospace;
   }
@@ -30,11 +27,8 @@
     font-size: 1.35rem;
     line-height: 1.35;
     -webkit-font-smoothing: none;
-    font-smooth: never;
     min-height: 100vh;
   }
-
-  /* faint scanlines over the whole desktop */
   body::after {
     content: '';
     position: fixed; inset: 0;
@@ -45,7 +39,8 @@
 
   a { color: inherit; }
   :focus-visible { outline: 3px dashed var(--white); outline-offset: 3px; }
-  .window :focus-visible, .dialog :focus-visible { outline-color: var(--black); }
+  .window :focus-visible, .dialog :focus-visible, .lb-window :focus-visible { outline-color: var(--black); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
   /* ---------- menu bar ---------- */
   .menubar {
@@ -61,12 +56,9 @@
     font-family: var(--display);
     font-size: 1rem;
   }
-  .menubar nav { display: flex; align-items: center; gap: 0.25rem; }
-  .menubar .brand { font-weight: 700; margin-right: 0.75rem; text-decoration: none; }
-  .menubar nav a {
-    text-decoration: none;
-    padding: 0.2rem 0.7rem;
-  }
+  .menubar nav { display: flex; align-items: center; gap: 0.1rem; }
+  .menubar .brand { font-weight: 700; margin-right: 0.6rem; text-decoration: none; }
+  .menubar nav a { text-decoration: none; padding: 0.2rem 0.6rem; }
   .menubar nav a:hover, .menubar nav a:focus-visible { background: var(--black); color: var(--white); }
   .clock { font-family: var(--body); font-size: 1.4rem; letter-spacing: 0.05em; }
 
@@ -107,6 +99,7 @@
   }
   .close-box {
     grid-column: 1;
+    display: block;
     width: 1.35rem; height: 1.35rem;
     margin-left: 0.6rem;
     border: 3px solid var(--black);
@@ -114,13 +107,23 @@
     cursor: pointer;
     padding: 0;
   }
-  .close-box:hover { background: var(--black); }
+  button.close-box:hover { background: var(--black); }
   .win-body { padding: 1.6rem 1.8rem 1.8rem; }
   .window.collapsed .win-body { display: none; }
   .window.collapsed .titlebar { border-bottom: 0; }
 
   .grid { display: grid; gap: 2.2rem; }
-  .section { margin-top: 3.5rem; }
+  .section { margin-top: 4rem; }
+  .section-head { margin-bottom: 1.6rem; }
+  .section-head h2 {
+    display: inline-flex; align-items: center; gap: 0.9rem;
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1;
+  }
+  .section-head svg { width: 46px; height: 36px; shape-rendering: crispEdges; }
+  .section-head p { margin-top: 0.5rem; max-width: 46ch; opacity: 0.85; }
+  .stack { display: grid; gap: 2.6rem; }
 
   /* ---------- hero ---------- */
   .hero-window { max-width: 860px; margin: 1rem auto 0; }
@@ -144,8 +147,8 @@
     pointer-events: none;
     opacity: 0;
   }
-  .glitch::before { color: var(--glitch-c); mix-blend-mode: multiply; }
-  .glitch::after  { color: var(--glitch-m); mix-blend-mode: multiply; }
+  .glitch::before { color: #00ffff; mix-blend-mode: multiply; }
+  .glitch::after  { color: #ff00ff; mix-blend-mode: multiply; }
   .glitch.burst::before { opacity: 1; animation: slice-a 0.45s steps(2, end); }
   .glitch.burst::after  { opacity: 1; animation: slice-b 0.45s steps(2, end); }
   @keyframes slice-a {
@@ -158,7 +161,7 @@
     50%  { transform: translate(-5px, 3px); clip-path: inset(20% 0 55% 0); }
     100% { transform: translate(0, 0);      clip-path: inset(0 0 100% 0); }
   }
-  .hero-roles { font-size: 1.6rem; margin: 1.4rem auto 0; max-width: 34rem; }
+  .hero-roles { font-size: 1.6rem; margin: 1.4rem auto 0; max-width: 36rem; }
   .hero-tagline { margin: 0.6rem auto 0; max-width: 30rem; font-size: 1.4rem; }
   .cursor-blink::after { content: '_'; animation: blink 1s steps(1) infinite; }
   @keyframes blink { 50% { opacity: 0; } }
@@ -184,13 +187,9 @@
   .hero-actions { margin-top: 2rem; display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
 
   /* ---------- about ---------- */
-  .about-grid { grid-template-columns: 1.15fr 0.85fr; align-items: start; }
-  .win-body h3.note-title {
-    font-family: var(--display);
-    font-size: clamp(1.7rem, 3.4vw, 2.3rem);
-    line-height: 1.1;
-    margin-bottom: 1rem;
-  }
+  .about-grid { grid-template-columns: 1.1fr 0.9fr; align-items: start; }
+  .cv-gif { display: block; width: 100%; height: auto; image-rendering: pixelated; border: 3px solid var(--black); background: #200040; }
+  .win-body h3.note-title { font-family: var(--display); font-size: clamp(1.6rem, 3.2vw, 2.1rem); line-height: 1.1; margin: 1.3rem 0 0.9rem; }
   .win-body p + p { margin-top: 0.9rem; }
   .win-body p { max-width: 60ch; }
 
@@ -198,80 +197,73 @@
   .stat {
     border: 3px solid var(--black);
     padding: 0.8rem 0.9rem 0.7rem;
-    background:
-      radial-gradient(var(--black) 1px, transparent 1.2px) 0 0 / 4px 4px;
+    background: radial-gradient(var(--black) 1px, transparent 1.2px) 0 0 / 4px 4px;
     background-color: var(--white);
   }
-  .stat span {
-    display: inline-block;
-    background: var(--white);
-    padding: 0 0.3rem;
-  }
+  .stat span { display: inline-block; background: var(--white); padding: 0 0.3rem; }
   .stat .num { font-family: var(--display); font-weight: 700; font-size: 2.4rem; line-height: 1.1; }
   .stat .lbl { font-size: 1.15rem; margin-top: 0.2rem; }
 
-  .tags { display: flex; flex-wrap: wrap; gap: 0.55rem; list-style: none; }
-  .tags li {
-    border: 2px solid var(--black);
-    padding: 0.05rem 0.65rem;
-    font-size: 1.2rem;
-    background: var(--white);
-  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; }
+  .tags li { border: 2px solid var(--black); padding: 0.05rem 0.65rem; font-size: 1.2rem; background: var(--white); }
   .tags li:hover { background: var(--black); color: var(--white); }
 
-  /* ---------- projects ---------- */
-  .projects-grid { grid-template-columns: repeat(12, 1fr); gap: 2.2rem; }
-  .p-wide   { grid-column: span 7; }
-  .p-narrow { grid-column: span 5; }
-  .p-third  { grid-column: span 4; }
+  /* ---------- cases ---------- */
+  .case-body { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 2rem; align-items: start; }
+  .case-text { display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+  .p-cat { font-size: 1.2rem; opacity: 0.8; }
+  .p-title { font-family: var(--display); font-size: 1.9rem; line-height: 1.1; font-weight: 700; }
+  .p-title.small { font-size: 1.5rem; }
+  .p-desc { font-size: 1.25rem; }
+  .p-role { font-family: var(--display); font-size: 1rem; border-top: 2px dashed var(--black); padding-top: 0.6rem; width: 100%; }
+  .p-open { font-family: var(--display); font-size: 0.95rem; text-decoration: underline; }
+  .case-text .btn { margin-top: 0.4rem; }
 
-  a.project { text-decoration: none; color: var(--black); }
-  a.project:hover .window-inner, a.project:focus-visible .window-inner { background: var(--black); color: var(--white); }
-  .project { height: 100%; }
-  .project .window { height: 100%; transition: none; }
-  .project:hover .window, .project:focus-visible .window { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 rgba(255,255,255,0.45); }
+  .gallery { display: grid; gap: 0.9rem; }
+  .g-slide { grid-template-columns: repeat(2, 1fr); }
+  .g-wide  { grid-template-columns: repeat(2, 1fr); }
+  .g-phone { grid-template-columns: repeat(4, 1fr); }
+  .g-poster { grid-template-columns: minmax(0, 320px); justify-content: center; }
+  .g-play  { grid-template-columns: 1fr; }
 
   .thumb {
-    height: 9rem;
-    border-bottom: 3px solid var(--black);
-    margin: 0 3px;
     position: relative;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .thumb .label {
-    background: var(--white);
+    display: block;
     border: 3px solid var(--black);
-    padding: 0.1rem 0.8rem;
-    font-family: var(--display);
-    font-size: 1.1rem;
-    font-weight: 700;
+    background: var(--white);
+    padding: 0;
+    cursor: zoom-in;
+    overflow: hidden;
+    line-height: 0;
   }
-  .t-check { background: conic-gradient(var(--black) 25%, var(--white) 0 50%, var(--black) 0 75%, var(--white) 0) 0 0 / 12px 12px; }
-  .t-dots  { background: radial-gradient(var(--black) 2.2px, transparent 2.4px) 0 0 / 8px 8px, var(--white); }
-  .t-diag  { background: repeating-linear-gradient(45deg, var(--black) 0 3px, var(--white) 3px 9px); }
-  .t-bars  { background: repeating-linear-gradient(to right, var(--black) 0 6px, var(--white) 6px 12px); }
-  .t-fade  {
-    background:
-      linear-gradient(to right, var(--white), transparent 60%),
-      conic-gradient(var(--black) 25%, var(--white) 0 50%, var(--black) 0 75%, var(--white) 0) 0 0 / 6px 6px;
-  }
+  .thumb img { display: block; width: 100%; height: auto; }
+  .thumb .d { image-rendering: pixelated; }
+  .thumb .c { position: absolute; inset: 0; height: 100%; object-fit: cover; opacity: 0; }
+  .thumb:hover .c, .thumb:focus-visible .c { opacity: 1; }
+  .thumb.wire { grid-column: span 2; }
+  .g-phone .thumb:not(.wire) .c { object-fit: fill; }
 
-  .project .win-body { display: flex; flex-direction: column; gap: 0.7rem; flex: 1; padding-top: 1.2rem; }
-  .p-cat { font-size: 1.2rem; opacity: 0.8; }
-  .p-title { font-family: var(--display); font-size: 1.8rem; line-height: 1.1; }
-  .p-desc { font-size: 1.25rem; }
-  .p-role { margin-top: auto; padding-top: 0.5rem; font-family: var(--display); font-size: 1rem; border-top: 2px dashed currentColor; }
-  .p-open { font-family: var(--display); font-size: 0.95rem; text-decoration: underline; }
-
-  /* ---------- activities (folders) ---------- */
-  .folders { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-  .folder {
-    display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
-    text-align: center;
+  .play {
+    display: flex; align-items: flex-end; justify-content: flex-start;
+    min-height: 14rem;
+    border: 3px solid var(--black);
     text-decoration: none;
-    padding: 0.8rem 0.6rem;
     color: var(--black);
+    background:
+      conic-gradient(var(--black) 25%, var(--white) 0 50%, var(--black) 0 75%, var(--white) 0) 0 0 / 10px 10px;
+    padding: 1rem;
   }
+  .play-label { background: var(--white); border: 3px solid var(--black); padding: 0.15rem 0.9rem; font-family: var(--display); font-weight: 700; font-size: 1.15rem; }
+  .play:hover .play-label, .play:focus-visible .play-label { background: var(--black); color: var(--white); }
+
+  .mini-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; }
+  a.mini { text-decoration: none; color: var(--black); }
+  a.mini .win-body { display: flex; flex-direction: column; gap: 0.6rem; }
+  a.mini:hover, a.mini:focus-visible { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 rgba(255,255,255,0.45); }
+
+  /* ---------- folders ---------- */
+  .folders { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .folder { display: flex; flex-direction: column; align-items: center; gap: 0.7rem; text-align: center; text-decoration: none; padding: 0.8rem 0.6rem; color: var(--black); }
   .folder svg { width: 84px; height: 66px; shape-rendering: crispEdges; }
   .folder .f-name { font-size: 1.3rem; line-height: 1.15; padding: 0 0.3rem; }
   .folder .f-year { font-family: var(--display); font-size: 0.9rem; }
@@ -279,7 +271,7 @@
   a.folder:hover svg .fill, a.folder:focus-visible svg .fill { fill: var(--black); }
   a.folder:hover svg .line, a.folder:focus-visible svg .line { stroke: var(--black); }
 
-  /* ---------- contact (alert dialog) ---------- */
+  /* ---------- contact ---------- */
   .contact { display: flex; justify-content: center; }
   .dialog {
     width: min(640px, 100%);
@@ -296,7 +288,6 @@
   .dialog p { margin-top: 0.6rem; }
   .dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 1.1rem; margin-top: 1.6rem; }
 
-  /* ---------- footer ---------- */
   footer {
     border-top: 3px solid var(--white);
     margin-top: 4rem;
@@ -305,7 +296,19 @@
     font-size: 1.2rem;
   }
 
-  /* ---------- reveal: dither-in, only on first view ---------- */
+  /* ---------- lightbox ---------- */
+  dialog.lb { border: 0; background: transparent; padding: 0; max-width: min(96vw, 1100px); width: 100%; margin: auto; overflow: visible; }
+  dialog.lb::backdrop { background: rgba(0,0,0,0.93); }
+  .lb-window { background: var(--white); color: var(--black); border: 3px solid var(--white); outline: 3px solid var(--black); outline-offset: -6px; }
+  .lb-body { padding: 1rem; display: flex; justify-content: center; background: var(--white); }
+  .lb-body img { max-width: 100%; max-height: 74vh; height: auto; width: auto; display: block; border: 3px solid var(--black); }
+  .lb-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0 1rem 1rem; flex-wrap: wrap; }
+  .lb-bar .count { font-family: var(--display); font-size: 1rem; }
+  .lb-bar .btns { display: flex; gap: 0.9rem; }
+  .lb-bar button.btn:disabled { opacity: 0.35; cursor: default; }
+  .lb-bar button.btn:disabled:hover { background: var(--white); color: var(--black); }
+
+  /* ---------- reveal ---------- */
   .js .reveal { opacity: 0; }
   .js .reveal.visible { animation: pop 0.35s steps(4, end) forwards; }
   @keyframes pop {
@@ -315,17 +318,18 @@
 
   /* ---------- responsive ---------- */
   @media (max-width: 880px) {
-    .about-grid { grid-template-columns: 1fr; }
-    .p-wide, .p-narrow, .p-third { grid-column: span 12; }
+    .about-grid, .case-body, .mini-row { grid-template-columns: 1fr; }
     .folders { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
     body { font-size: 1.25rem; }
-    .menubar nav a:not(.brand) { padding: 0.2rem 0.4rem; }
+    .menubar nav a:not(.brand) { padding: 0.2rem 0.3rem; font-size: 0.85rem; }
     .menubar .clock { display: none; }
     main { padding: 5rem 1rem 2rem; }
     .win-body { padding: 1.2rem 1.1rem 1.4rem; }
     .stats { grid-template-columns: 1fr; }
+    .g-phone { grid-template-columns: repeat(3, 1fr); }
+    .g-slide { grid-template-columns: 1fr; }
     .dialog-row { flex-direction: column; }
     .dialog-actions { justify-content: stretch; }
     .dialog-actions .btn { width: 100%; text-align: center; }
@@ -334,19 +338,23 @@
     html { scroll-behavior: auto; }
     .glitch.burst::before, .glitch.burst::after, .cursor-blink::after { animation: none; }
     .js .reveal, .js .reveal.visible { opacity: 1; animation: none; clip-path: none; }
-    .project:hover .window { transform: none; }
+    a.mini:hover { transform: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- shared pixel icons -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="folder" viewBox="0 0 28 22">
       <path class="fill" d="M1 4h9l2 3h15v14H1z" fill="#fff"/>
       <path class="line" d="M1 4h9l2 3h15v14H1z" fill="none" stroke="#000" stroke-width="2"/>
       <path class="line" d="M1 9h26" stroke="#000" stroke-width="1"/>
+    </symbol>
+    <symbol id="folder-w" viewBox="0 0 28 22">
+      <path d="M1 4h9l2 3h15v14H1z" fill="#000"/>
+      <path d="M1 4h9l2 3h15v14H1z" fill="none" stroke="#fff" stroke-width="2"/>
+      <path d="M1 9h26" stroke="#fff" stroke-width="1"/>
     </symbol>
   </defs>
 </svg>
@@ -355,8 +363,9 @@
   <nav aria-label="Main">
     <a class="brand" href="#top">◆ Ghadi</a>
     <a href="#about">About</a>
-    <a href="#projects">Work</a>
-    <a href="#activities">Clubs</a>
+    <a href="#games">Games</a>
+    <a href="#design">Design</a>
+    <a href="#ux">UX</a>
     <a href="#contact">Contact</a>
   </nav>
   <div class="clock" id="clock" aria-hidden="true">4:20:00 PM</div>
@@ -365,20 +374,17 @@
 <main id="top">
 
   <!-- HERO -->
-  <section class="hero" aria-label="Introduction">
+  <section aria-label="Introduction">
     <div class="window hero-window">
-      <div class="titlebar">
-        <button class="close-box" aria-label="Collapse window"></button>
-        <h2>Hello.txt</h2>
-      </div>
+      <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h2>Hello.txt</h2></div>
       <div class="win-body hero-body">
         <p class="hero-hello">Hi, I'm</p>
         <h1 class="glitch" id="name" data-text="Ghadi Alqhtani">Ghadi Alqhtani</h1>
-        <p class="hero-roles">HCI designer, game artist and developer.</p>
-        <p class="hero-tagline cursor-blink">Crafting experiences where design, emotion and technology meet</p>
+        <p class="hero-roles">Game designer, pixel artist and UX/UI designer.</p>
+        <p class="hero-tagline cursor-blink">I make games and interfaces people want to come back to</p>
         <div class="hero-actions">
-          <a class="btn default" href="#projects">Open work</a>
-          <a class="btn" href="#contact">Say hi</a>
+          <a class="btn default" href="#games">Play my games</a>
+          <a class="btn" href="#ux">See my UX work</a>
         </div>
       </div>
     </div>
@@ -388,105 +394,168 @@
   <section class="section" id="about">
     <div class="grid about-grid">
       <div class="window reveal">
-        <div class="titlebar">
-          <button class="close-box" aria-label="Collapse window"></button>
-          <h2>About</h2>
-        </div>
+        <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h2>Mini_CV.gif</h2></div>
         <div class="win-body">
+          <img class="cv-gif" src="assets/mini_cv.gif" width="480" height="185" alt="Animated dialogue box in an Omori style. Ghadi says: I'm Ghadi Alqhtani, HCI student who loves playing games. Fav games are Silent Hill franchise, Life is Strange, Final Fantasy XII and Omori. Skilled in 2D pixel art style and animation, former IG editor, Adobe Photoshop and lastly UI design. Press 1 if you want to see the beast Sonic, he's my cat.">
           <h3 class="note-title">Design is a language I speak fluently.</h3>
-          <p>Senior year Human-Computer Interaction student at Umm Al-Qura University. I work across UX/UI design, game design, motion graphics and front-end development, always drawn to the feeling a well-crafted experience creates.</p>
-          <p>From pixel art to information architecture, I believe every detail carries intention.</p>
+          <p>Senior year Human-Computer Interaction student at Umm Al-Qura University. I work across game design, pixel art and animation, UX/UI design and front-end development, always drawn to the feeling a well-crafted experience creates.</p>
+          <p>My favourite games are the Silent Hill series, Life is Strange, Final Fantasy XII and Omori, and you can see where my taste comes from.</p>
           <div class="stats">
             <div class="stat"><span class="num">5+</span><br><span class="lbl">Projects shipped</span></div>
             <div class="stat"><span class="num">10</span><br><span class="lbl">Days to make Pillow Castle</span></div>
-            <div class="stat"><span class="num">80+</span><br><span class="lbl">Research participants</span></div>
           </div>
         </div>
       </div>
 
       <div class="window reveal">
-        <div class="titlebar">
-          <button class="close-box" aria-label="Collapse window"></button>
-          <h2>Skills</h2>
-        </div>
+        <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h2>Skills</h2></div>
         <div class="win-body">
           <ul class="tags">
-            <li>Figma</li><li>Adobe Photoshop</li><li>Adobe Illustrator</li><li>After Effects</li>
-            <li>UX Research</li><li>Information Architecture</li><li>Usability Testing</li>
-            <li>Card Sorting</li><li>Tree Testing</li><li>Flutter and Dart</li><li>HTML, CSS, JS</li>
-            <li>Firebase</li><li>SQL</li><li>Java</li><li>Game Design</li><li>Pixel Art</li>
-            <li>2D Animation</li><li>Motion Graphics</li><li>Visual Design</li>
-            <li>Interaction Design</li><li>Wireframing</li><li>Unity (beginner)</li>
+            <li>Game Design</li><li>Pixel Art</li><li>2D Animation</li><li>Unity (beginner)</li>
+            <li>Figma</li><li>UX Research</li><li>Wireframing</li><li>Usability Testing</li>
+            <li>Information Architecture</li><li>Card Sorting</li><li>Tree Testing</li>
+            <li>Adobe Photoshop</li><li>Adobe Illustrator</li><li>After Effects</li>
+            <li>Motion Graphics</li><li>Visual Design</li><li>Interaction Design</li>
+            <li>Flutter and Dart</li><li>HTML, CSS, JS</li><li>Firebase</li><li>SQL</li><li>Java</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROJECTS -->
-  <section class="section" id="projects">
-    <div class="grid projects-grid">
-
-      <a class="project p-wide reveal" href="https://lammelione.itch.io/pillow-castle" target="_blank" rel="noopener">
-        <div class="window">
-          <div class="titlebar"><span class="close-box" style="pointer-events:none"></span><h3>Pillow_Castle.exe</h3></div>
-          <div class="thumb t-check"><span class="label">2D pixel game</span></div>
-          <div class="win-body">
-            <p class="p-cat">Game design, pixel art, game jam</p>
-            <h3 class="p-title">Pillow Castle</h3>
-            <p class="p-desc">A short 2D pixel art game built in exactly 10 days for SheJams 2025. Two endings, original illustrations, time-pressure mechanics, and the nostalgic rush of building a pillow fort before mama cleans up. Shipped with a 5-person multidisciplinary team and published on itch.io.</p>
-            <ul class="tags"><li>Game Design</li><li>Pixel Art</li><li>GDD</li><li>SheJams 2025</li><li>itch.io</li></ul>
-            <p class="p-role">Game Designer and Pixel Artist</p>
-            <span class="p-open">Open on itch.io</span>
-          </div>
+  <!-- GAMES -->
+  <section class="section" id="games">
+    <div class="section-head reveal">
+      <h2><svg viewBox="0 0 28 22" aria-hidden="true"><use href="#folder-w"/></svg>Games</h2>
+      <p>Game jams, pixel art and retro visuals.</p>
+    </div>
+    <div class="stack">
+    <article class="window case reveal">
+      <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h3>Pillow_Castle.exe</h3></div>
+      <div class="win-body case-body">
+        <div class="case-text">
+          <p class="p-cat">Game design, pixel art, game jam</p>
+          <h4 class="p-title">Pillow Castle</h4>
+          <p class="p-desc">A short 2D pixel art game built in exactly 10 days for SheJams 2025. Two endings, original illustrations, time-pressure mechanics, and the rush of building a pillow fort before mama cleans up. Shipped with a 5-person multidisciplinary team and published on itch.io.</p>
+          <ul class="tags"><li>Game Design</li><li>Pixel Art</li><li>GDD</li><li>SheJams 2025</li><li>itch.io</li></ul>
+          <p class="p-role">Game Designer and Pixel Artist</p>
+          
         </div>
-      </a>
+        <div class="gallery g-play"><a class="play" href="https://lammelione.itch.io/pillow-castle" target="_blank" rel="noopener"><span class="play-label">Play on itch.io</span></a></div>
+      </div>
+    </article>
+    </div>
+  </section>
 
-      <a class="project p-third reveal" href="https://www.figma.com/design/6K4PDmwMUJ0x5uS0XlVUqU/Better-Expense?node-id=0-1&p=f&t=2uUN5NCQTiQHr69M-0" target="_blank" rel="noopener">
-        <div class="window">
-          <div class="titlebar"><span class="close-box" style="pointer-events:none"></span><h3>Better_Expense.fig</h3></div>
-          <div class="thumb t-diag"><span class="label">Mobile UI</span></div>
-          <div class="win-body">
-            <p class="p-cat">UI/UX design, Figma</p>
-            <h3 class="p-title">Better Expense</h3>
-            <p class="p-desc">End-to-end mobile UI for a personal finance app. From wireframes to high-fidelity Figma prototype: budget dashboards, expense tracking and financial reports.</p>
-            <ul class="tags"><li>Figma</li><li>Mobile UX</li><li>Prototyping</li></ul>
-            <p class="p-role">UI/UX Designer</p>
-            <span class="p-open">Open in Figma</span>
-          </div>
+  <!-- DESIGN -->
+  <section class="section" id="design">
+    <div class="section-head reveal">
+      <h2><svg viewBox="0 0 28 22" aria-hidden="true"><use href="#folder-w"/></svg>Design</h2>
+      <p>Visual design for the UQU Computing Club. Hover a thumbnail to see it in colour, click to open it.</p>
+    </div>
+    <div class="stack">
+    <article class="window case reveal">
+      <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h3>PC_Parts_Guide.pdf</h3></div>
+      <div class="win-body case-body">
+        <div class="case-text">
+          <p class="p-cat">Pixel art, educational slides</p>
+          <h4 class="p-title">How to build your PC</h4>
+          <p class="p-desc">A pixel art explainer deck that walks through every part of a PC: motherboard, CPU, GPU, RAM, storage, power supply, cooling and case. It ends with builds for students, programmers and designers, and a compatibility checker.</p>
+          <ul class="tags"><li>Pixel Art</li><li>Slide Design</li><li>Arabic Typography</li><li>Illustration</li></ul>
+          <p class="p-role">Media and Graphic Designer, Computer Club, UQU</p>
+          
         </div>
-      </a>
-
-      <a class="project p-third reveal" href="https://ghadialq.github.io/Gaming-guide/" target="_blank" rel="noopener">
-        <div class="window">
-          <div class="titlebar"><span class="close-box" style="pointer-events:none"></span><h3>Gaming_Guide.html</h3></div>
-          <div class="thumb t-bars"><span class="label">8 pages</span></div>
-          <div class="win-body">
-            <p class="p-cat">Web design, front-end development</p>
-            <h3 class="p-title">Gaming Guide</h3>
-            <p class="p-desc">An 8-page gaming platform with login, community, leaderboard and stats pages. Custom pixel typography, a cohesive visual system and interactive front-end features.</p>
-            <ul class="tags"><li>HTML, CSS, JS</li><li>Visual Design</li><li>Web Dev</li></ul>
-            <p class="p-role">Web Designer and Developer</p>
-            <span class="p-open">Open the site</span>
-          </div>
+        <div class="gallery g-slide"><button class="thumb " style="aspect-ratio:420/236" type="button" data-full="assets/color/pc01.jpg" data-group="pc" data-caption="How to pick your PC parts, Title slide" aria-label="View larger: Hardware guide slide: Title slide"><img class="d" src="assets/dither/pc01.png" alt="" loading="lazy"><img class="c" src="assets/color/pc01.jpg" alt="Hardware guide slide: Title slide" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/236" type="button" data-full="assets/color/pc02.jpg" data-group="pc" data-caption="How to pick your PC parts, Motherboard" aria-label="View larger: Hardware guide slide: Motherboard"><img class="d" src="assets/dither/pc02.png" alt="" loading="lazy"><img class="c" src="assets/color/pc02.jpg" alt="Hardware guide slide: Motherboard" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/236" type="button" data-full="assets/color/pc05.jpg" data-group="pc" data-caption="How to pick your PC parts, Graphics card" aria-label="View larger: Hardware guide slide: Graphics card"><img class="d" src="assets/dither/pc05.png" alt="" loading="lazy"><img class="c" src="assets/color/pc05.jpg" alt="Hardware guide slide: Graphics card" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/236" type="button" data-full="assets/color/pc06.jpg" data-group="pc" data-caption="How to pick your PC parts, RAM" aria-label="View larger: Hardware guide slide: RAM"><img class="d" src="assets/dither/pc06.png" alt="" loading="lazy"><img class="c" src="assets/color/pc06.jpg" alt="Hardware guide slide: RAM" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/236" type="button" data-full="assets/color/pc11.jpg" data-group="pc" data-caption="How to pick your PC parts, Student build" aria-label="View larger: Hardware guide slide: Student build"><img class="d" src="assets/dither/pc11.png" alt="" loading="lazy"><img class="c" src="assets/color/pc11.jpg" alt="Hardware guide slide: Student build" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/236" type="button" data-full="assets/color/pc12.jpg" data-group="pc" data-caption="How to pick your PC parts, Programmer and designer build" aria-label="View larger: Hardware guide slide: Programmer and designer build"><img class="d" src="assets/dither/pc12.png" alt="" loading="lazy"><img class="c" src="assets/color/pc12.jpg" alt="Hardware guide slide: Programmer and designer build" loading="lazy"></button></div>
+      </div>
+    </article>
+    <article class="window case reveal">
+      <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h3>Tech_Gist_Headers.png</h3></div>
+      <div class="win-body case-body">
+        <div class="case-text">
+          <p class="p-cat">Newsletter design, branding</p>
+          <h4 class="p-title">Tech Gist, Al-Hasoubi newsletter</h4>
+          <p class="p-desc">Header images for the Tech Gist newsletter (نشرة الحاسوبي). Each issue gets its own colour mood and photo treatment, while the logo placement and overlay style keep the series recognisable.</p>
+          <ul class="tags"><li>Newsletter</li><li>Branding</li><li>Photoshop</li><li>Colour Systems</li></ul>
+          <p class="p-role">Newsletter Designer, Al-Hasoubi, Computer Club</p>
+          <a class="btn" href="https://drive.google.com/drive/folders/1IwGmMXI2bZOHelEacTHTtg_dnHmoiTQZ?usp=drive_link" target="_blank" rel="noopener">See more issues</a>
         </div>
-      </a>
+        <div class="gallery g-wide"><button class="thumb " style="aspect-ratio:420/140" type="button" data-full="assets/color/tg1.jpg" data-group="tg" data-caption="Tech Gist newsletter header 1" aria-label="View larger: Tech Gist newsletter header 1"><img class="d" src="assets/dither/tg1.png" alt="" loading="lazy"><img class="c" src="assets/color/tg1.jpg" alt="Tech Gist newsletter header 1" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/140" type="button" data-full="assets/color/tg2.jpg" data-group="tg" data-caption="Tech Gist newsletter header 2" aria-label="View larger: Tech Gist newsletter header 2"><img class="d" src="assets/dither/tg2.png" alt="" loading="lazy"><img class="c" src="assets/color/tg2.jpg" alt="Tech Gist newsletter header 2" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/140" type="button" data-full="assets/color/tg3.jpg" data-group="tg" data-caption="Tech Gist newsletter header 3" aria-label="View larger: Tech Gist newsletter header 3"><img class="d" src="assets/dither/tg3.png" alt="" loading="lazy"><img class="c" src="assets/color/tg3.jpg" alt="Tech Gist newsletter header 3" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/140" type="button" data-full="assets/color/tg4.jpg" data-group="tg" data-caption="Tech Gist newsletter header 4" aria-label="View larger: Tech Gist newsletter header 4"><img class="d" src="assets/dither/tg4.png" alt="" loading="lazy"><img class="c" src="assets/color/tg4.jpg" alt="Tech Gist newsletter header 4" loading="lazy"></button></div>
+      </div>
+    </article>
+    <article class="window case reveal">
+      <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h3>Press_Start.png</h3></div>
+      <div class="win-body case-body">
+        <div class="case-text">
+          <p class="p-cat">Poster design, retro game art</p>
+          <h4 class="p-title">Press Start</h4>
+          <p class="p-desc">Poster for the Game Development and Cinema event at the UQU Computing Club. An arcade cabinet under a synthwave sky, a pixel Arabic headline with a glitch edge, and a Press Start prompt to open the night.</p>
+          <ul class="tags"><li>Poster Design</li><li>Retro Art</li><li>Pixel Type</li><li>Illustrator</li><li>Photoshop</li></ul>
+          <p class="p-role">Media and Graphic Designer, Computer Club, UQU</p>
+          
+        </div>
+        <div class="gallery g-poster"><button class="thumb " style="aspect-ratio:360/509" type="button" data-full="assets/color/poster.jpg" data-group="poster" data-caption="Press Start poster, Game Development and Cinema event" aria-label="View larger: Press Start poster for the Game Development and Cinema event, UQU Computing Club"><img class="d" src="assets/dither/poster.png" alt="" loading="lazy"><img class="c" src="assets/color/poster.jpg" alt="Press Start poster for the Game Development and Cinema event, UQU Computing Club" loading="lazy"></button></div>
+      </div>
+    </article>
+    </div>
+  </section>
 
+  <!-- UX -->
+  <section class="section" id="ux">
+    <div class="section-head reveal">
+      <h2><svg viewBox="0 0 28 22" aria-hidden="true"><use href="#folder-w"/></svg>UX and UI</h2>
+      <p>Research, flows and interfaces, from the first survey to the handoff.</p>
+    </div>
+    <div class="stack">
+    <article class="window case reveal">
+      <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h3>Better_Expense.fig</h3></div>
+      <div class="win-body case-body">
+        <div class="case-text">
+          <p class="p-cat">UI/UX design, Figma, usability testing</p>
+          <h4 class="p-title">Better Expense</h4>
+          <p class="p-desc">A personal finance app designed end to end: a survey of about 80 people, interviews, personas, wireframes, a visual system, a clickable prototype and a handoff spec. Usability tests with 5 users changed the category card, the bank linking order and the repeated buttons.</p>
+          <ul class="tags"><li>Figma</li><li>Survey and Interviews</li><li>Personas</li><li>Prototyping</li><li>Usability Testing</li></ul>
+          <p class="p-role">UI/UX Designer</p>
+          <a class="btn" href="https://www.figma.com/design/6K4PDmwMUJ0x5uS0XlVUqU/Better-Expense?node-id=0-1&p=f&t=2uUN5NCQTiQHr69M-0" target="_blank" rel="noopener">Open in Figma</a>
+        </div>
+        <div class="gallery g-phone"><button class="thumb wire" style="aspect-ratio:360/589" type="button" data-full="assets/color/be_wire.jpg" data-group="be" data-caption="Better Expense wireframes" aria-label="View larger: Better Expense wireframes: splash, log in, sign up and dashboard"><img class="d" src="assets/dither/be_wire.png" alt="" loading="lazy"><img class="c" src="assets/color/be_wire.jpg" alt="Better Expense wireframes: splash, log in, sign up and dashboard" loading="lazy"></button><button class="thumb phone" style="aspect-ratio:330/715" type="button" data-full="assets/color/be_dash.jpg" data-group="be" data-caption="Better Expense, Dashboard" aria-label="View larger: Better Expense screen: Dashboard"><img class="d" src="assets/dither/be_dash.png" alt="" loading="lazy"><img class="c" src="assets/color/be_dash.jpg" alt="Better Expense screen: Dashboard" loading="lazy"></button><button class="thumb phone" style="aspect-ratio:330/715" type="button" data-full="assets/color/be_budget.jpg" data-group="be" data-caption="Better Expense, Budget settings" aria-label="View larger: Better Expense screen: Budget settings"><img class="d" src="assets/dither/be_budget.png" alt="" loading="lazy"><img class="c" src="assets/color/be_budget.jpg" alt="Better Expense screen: Budget settings" loading="lazy"></button><button class="thumb phone" style="aspect-ratio:330/715" type="button" data-full="assets/color/be_trans.jpg" data-group="be" data-caption="Better Expense, Transactions overview" aria-label="View larger: Better Expense screen: Transactions overview"><img class="d" src="assets/dither/be_trans.png" alt="" loading="lazy"><img class="c" src="assets/color/be_trans.jpg" alt="Better Expense screen: Transactions overview" loading="lazy"></button><button class="thumb phone" style="aspect-ratio:330/715" type="button" data-full="assets/color/be_sav.jpg" data-group="be" data-caption="Better Expense, Savings report" aria-label="View larger: Better Expense screen: Savings report"><img class="d" src="assets/dither/be_sav.png" alt="" loading="lazy"><img class="c" src="assets/color/be_sav.jpg" alt="Better Expense screen: Savings report" loading="lazy"></button><button class="thumb phone" style="aspect-ratio:330/715" type="button" data-full="assets/color/be_stats.jpg" data-group="be" data-caption="Better Expense, Spending statistics" aria-label="View larger: Better Expense screen: Spending statistics"><img class="d" src="assets/dither/be_stats.png" alt="" loading="lazy"><img class="c" src="assets/color/be_stats.jpg" alt="Better Expense screen: Spending statistics" loading="lazy"></button><button class="thumb phone" style="aspect-ratio:330/715" type="button" data-full="assets/color/be_bank.jpg" data-group="be" data-caption="Better Expense, Bank connection" aria-label="View larger: Better Expense screen: Bank connection"><img class="d" src="assets/dither/be_bank.png" alt="" loading="lazy"><img class="c" src="assets/color/be_bank.jpg" alt="Better Expense screen: Bank connection" loading="lazy"></button><button class="thumb phone" style="aspect-ratio:330/715" type="button" data-full="assets/color/be_prof.jpg" data-group="be" data-caption="Better Expense, Profile" aria-label="View larger: Better Expense screen: Profile"><img class="d" src="assets/dither/be_prof.png" alt="" loading="lazy"><img class="c" src="assets/color/be_prof.jpg" alt="Better Expense screen: Profile" loading="lazy"></button></div>
+      </div>
+    </article>
+    <article class="window case reveal">
+      <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h3>WorkFusion.pptx</h3></div>
+      <div class="win-body case-body">
+        <div class="case-text">
+          <p class="p-cat">UX research, personas, journey maps</p>
+          <h4 class="p-title">WorkFusion</h4>
+          <p class="p-desc">Capstone project for the Prince Sultan Aviation Academy: an AI-powered platform that collects project updates between employees and managers. Interviews and a survey led to three personas, journey maps, a user flow and a working prototype.</p>
+          <ul class="tags"><li>Interviews</li><li>Survey</li><li>Personas</li><li>Journey Maps</li><li>Prototype</li></ul>
+          <p class="p-role">UX team member, capstone project</p>
+          
+        </div>
+        <div class="gallery g-slide"><button class="thumb " style="aspect-ratio:420/236" type="button" data-full="assets/color/wf03.jpg" data-group="wf" data-caption="WorkFusion problem statement slide" aria-label="View larger: WorkFusion problem statement slide"><img class="d" src="assets/dither/wf03.png" alt="" loading="lazy"><img class="c" src="assets/color/wf03.jpg" alt="WorkFusion problem statement slide" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/236" type="button" data-full="assets/color/wf07.jpg" data-group="wf" data-caption="WorkFusion persona slide: Faisal, supervisor" aria-label="View larger: WorkFusion persona slide: Faisal, supervisor"><img class="d" src="assets/dither/wf07.png" alt="" loading="lazy"><img class="c" src="assets/color/wf07.jpg" alt="WorkFusion persona slide: Faisal, supervisor" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/236" type="button" data-full="assets/color/wf11.jpg" data-group="wf" data-caption="WorkFusion journey map slide" aria-label="View larger: WorkFusion journey map slide"><img class="d" src="assets/dither/wf11.png" alt="" loading="lazy"><img class="c" src="assets/color/wf11.jpg" alt="WorkFusion journey map slide" loading="lazy"></button><button class="thumb " style="aspect-ratio:420/236" type="button" data-full="assets/color/wf15.jpg" data-group="wf" data-caption="WorkFusion prototype screens slide" aria-label="View larger: WorkFusion prototype screens slide"><img class="d" src="assets/dither/wf15.png" alt="" loading="lazy"><img class="c" src="assets/color/wf15.jpg" alt="WorkFusion prototype screens slide" loading="lazy"></button></div>
+      </div>
+    </article>
+    <div class="mini-row">
+      <a class="window mini reveal" href="https://drive.google.com/file/d/1aa-miLPS_rr4WhGuPbIQdSCxSg0YD-lF/view?usp=sharing" target="_blank" rel="noopener">
+        <div class="titlebar"><span class="close-box" style="pointer-events:none"></span><h3>Marsool_IA.pdf</h3></div>
+        <div class="win-body"><p class="p-title small">IA redesign for Marsool</p><p class="p-desc">Survey of 80+ users, card sorting, tree testing and a new sitemap with wireframes for a grocery delivery app.</p><span class="p-open">Open the study</span></div>
+      </a>
+      <a class="window mini reveal" href="https://ghadialq.github.io/Gaming-guide/" target="_blank" rel="noopener">
+        <div class="titlebar"><span class="close-box" style="pointer-events:none"></span><h3>Gaming_Guide.html</h3></div>
+        <div class="win-body"><p class="p-title small">Gaming Guide</p><p class="p-desc">An 8-page gaming platform with login, community, leaderboard and stats pages. Custom pixel typography, built in HTML, CSS and JS.</p><span class="p-open">Open the site</span></div>
+      </a>
+    </div>
     </div>
   </section>
 
   <!-- ACTIVITIES -->
   <section class="section" id="activities">
     <div class="window reveal">
-      <div class="titlebar">
-        <button class="close-box" aria-label="Collapse window"></button>
-        <h2>Extracurricular activities</h2>
-      </div>
+      <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h2>Extracurricular activities</h2></div>
       <div class="win-body">
         <div class="folders">
           <a class="folder" href="https://drive.google.com/drive/folders/1L4G4Y-wyaWr2hF30eRvTpkjT4sKaNxQQ?usp=drive_link" target="_blank" rel="noopener">
             <svg viewBox="0 0 28 22" aria-hidden="true"><use href="#folder"/></svg>
-            <span class="f-name">Media and graphic designer, Computer Club, Media Committee, UQU</span>
+            <span class="f-name">Media and graphic designer, Computer Club, UQU</span>
             <span class="f-year">2024 to present</span>
           </a>
           <a class="folder" href="https://drive.google.com/drive/folders/1IwGmMXI2bZOHelEacTHTtg_dnHmoiTQZ?usp=drive_link" target="_blank" rel="noopener">
@@ -496,7 +565,7 @@
           </a>
           <div class="folder">
             <svg viewBox="0 0 28 22" aria-hidden="true"><use href="#folder"/></svg>
-            <span class="f-name">Game designer and developer,Electronic Games Club, Game Developers Committee, UQU</span>
+            <span class="f-name">Game designer and developer, Game Developers Committee - Electronic Games Club, UQU</span>
             <span class="f-year">2025 to present</span>
           </div>
         </div>
@@ -526,46 +595,86 @@
   </section>
 
   <footer>
-    <span>© 2026 Ghadi Alqhtani</span>
+    <span>© 2026 Ghadi</span>
     <span>Mecca-Jeddah, Saudi Arabia</span>
   </footer>
 </main>
 
+<!-- lightbox -->
+<dialog class="lb" id="lb" aria-label="Image viewer">
+  <div class="lb-window">
+    <div class="titlebar"><button class="close-box" id="lb-close" aria-label="Close viewer"></button><h2 id="lb-title">Viewer</h2></div>
+    <div class="lb-body"><img id="lb-img" src="" alt=""></div>
+    <div class="lb-bar">
+      <span class="count" id="lb-count"></span>
+      <span class="btns">
+        <button class="btn" type="button" id="lb-prev">Back</button>
+        <button class="btn default" type="button" id="lb-next">Next</button>
+      </span>
+    </div>
+  </div>
+</dialog>
+
 <script>
   document.documentElement.classList.add('js');
 
-  // menu bar clock
+  // clock
   const clock = document.getElementById('clock');
-  function tick() {
-    clock.textContent = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' });
-  }
+  function tick() { clock.textContent = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' }); }
   tick(); setInterval(tick, 1000);
 
-  // collapse / expand windows with the close box
-  document.querySelectorAll('button.close-box').forEach(btn => {
+  // collapse windows
+  document.querySelectorAll('button.close-box[aria-label="Collapse window"]').forEach(btn => {
     btn.addEventListener('click', () => btn.closest('.window').classList.toggle('collapsed'));
   });
 
-  // one glitch burst on load, then again when the name is hovered or focused
-  const name = document.getElementById('name');
+  // glitch burst
+  const nameEl = document.getElementById('name');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function burst() {
-    if (reduce) return;
-    name.classList.remove('burst');
-    void name.offsetWidth;
-    name.classList.add('burst');
-  }
+  function burst() { if (reduce) return; nameEl.classList.remove('burst'); void nameEl.offsetWidth; nameEl.classList.add('burst'); }
   setTimeout(burst, 500);
-  name.addEventListener('mouseenter', burst);
+  nameEl.addEventListener('mouseenter', burst);
 
-  // dither-in reveal, once per element
+  // lightbox
+  const dlg = document.getElementById('lb');
+  const lbImg = document.getElementById('lb-img');
+  const lbTitle = document.getElementById('lb-title');
+  const lbCount = document.getElementById('lb-count');
+  const prev = document.getElementById('lb-prev');
+  const next = document.getElementById('lb-next');
+  let list = [], idx = 0;
+  function show() {
+    const t = list[idx];
+    lbImg.src = t.dataset.full;
+    lbImg.alt = t.dataset.caption;
+    lbTitle.textContent = t.dataset.caption;
+    lbCount.textContent = (idx + 1) + ' of ' + list.length;
+    prev.disabled = idx === 0;
+    next.disabled = idx === list.length - 1;
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('.thumb');
+    if (!t) return;
+    list = Array.from(document.querySelectorAll('.thumb[data-group="' + t.dataset.group + '"]'));
+    idx = list.indexOf(t);
+    show();
+    dlg.showModal();
+  });
+  prev.addEventListener('click', () => { if (idx > 0) { idx--; show(); } });
+  next.addEventListener('click', () => { if (idx < list.length - 1) { idx++; show(); } });
+  document.getElementById('lb-close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft' && idx > 0) { idx--; show(); }
+    if (e.key === 'ArrowRight' && idx < list.length - 1) { idx++; show(); }
+  });
+
+  // reveal
   const items = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.08 });
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); } });
+    }, { threshold: 0.06 });
     items.forEach(el => io.observe(el));
   } else {
     items.forEach(el => el.classList.add('visible'));
