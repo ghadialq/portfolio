@@ -340,6 +340,20 @@
     .js .reveal, .js .reveal.visible { opacity: 1; animation: none; clip-path: none; }
     a.mini:hover { transform: none; }
   }
+/* ---------- find me online ---------- */
+.links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; }
+.link-tile {
+  display: flex; flex-direction: column; gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  border: 3px solid var(--black);
+  text-decoration: none;
+  color: var(--black);
+  background: var(--white);
+}
+.link-tile .l-name { font-family: var(--display); font-weight: 700; font-size: 1.2rem; }
+.link-tile .l-handle { font-size: 1.15rem; opacity: 0.85; }
+.link-tile:hover, .link-tile:focus-visible { background: var(--black); color: var(--white); }
+.link-tile:hover .l-handle, .link-tile:focus-visible .l-handle { opacity: 1; }
 </style>
 </head>
 <body>
@@ -367,6 +381,7 @@
     <a href="#design">Design</a>
     <a href="#ux">UX</a>
     <a href="#contact">Contact</a>
+    <a href="#links">Links</a>
   </nav>
   <div class="clock" id="clock" aria-hidden="true">4:20:00 PM</div>
 </header>
@@ -571,7 +586,31 @@
       </div>
     </div>
   </section>
-
+    <!-- LINKS -->
+  <section class="section" id="links">
+    <div class="window reveal">
+      <div class="titlebar"><button class="close-box" aria-label="Collapse window"></button><h2>Links.exe</h2></div>
+      <div class="win-body">
+        <div class="links-grid">
+          <a class="link-tile" href="https://ghldd.itch.io/" target="_blank" rel="noopener">
+            <span class="l-name">itch.io</span><span class="l-handle">ghldd.itch.io</span>
+          </a>
+          <a class="link-tile" href="https://www.linkedin.com/in/ghadi-ali-alqhtani" target="_blank" rel="noopener">
+            <span class="l-name">LinkedIn</span><span class="l-handle">Ghadi Ali Alqhtani</span>
+          </a>
+          <a class="link-tile" href="https://linktr.ee/galq" target="_blank" rel="noopener">
+            <span class="l-name">Linktree</span><span class="l-handle">linktr.ee/galq</span>
+          </a>
+          <a class="link-tile" href="https://x.com/ghldi" target="_blank" rel="noopener">
+            <span class="l-name">X (Twitter)</span><span class="l-handle">@ghldi</span>
+          </a>
+          <a class="link-tile" href="https://discord.com/users/1098236872301482025" target="_blank" rel="noopener">
+            <span class="l-name">Discord</span><span class="l-handle">Open my profile</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
   <!-- CONTACT -->
   <section class="section contact" id="contact">
     <div class="dialog reveal" role="group" aria-labelledby="contact-title">
