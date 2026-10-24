@@ -3,850 +3,604 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ghadi Alqhtani — Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<title>Ghadi Alqhtani, Portfolio</title>
+<meta name="description" content="Portfolio of Ghadi Alqhtani, HCI student, UX/UI designer, pixel artist and game developer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --void: #06040f;
-    --deep: #0d0820;
-    --plum: #1a0f35;
-    --neon-purple: #9b5de5;
-    --neon-pink: #f72585;
-    --neon-blue: #4cc9f0;
-    --neon-gold: #ffd166;
-    --soft-lavender: #c8b8f8;
-    --text: #f0eaff;
-    --muted: #9488b8;
+    --black: #000;
+    --white: #fff;
+    --glitch-c: #00ffff;
+    --glitch-m: #ff00ff;
+    --glitch-y: #ffff00;
+    --display: 'Pixelify Sans', 'Courier New', monospace;
+    --body: 'VT323', 'Courier New', monospace;
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 4rem; }
 
   body {
-    background: var(--void);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden;
-    cursor: none;
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--body);
+    font-size: 1.35rem;
+    line-height: 1.35;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    min-height: 100vh;
   }
 
-  /* Custom cursor */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--neon-pink);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9999;
-    transition: transform 0.1s ease;
-    mix-blend-mode: screen;
-  }
-  .cursor-trail {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(155,93,229,0.4);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9998;
-    transition: all 0.25s ease;
-  }
-
-  /* Canvas background */
-  #bg-canvas {
-    position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0; pointer-events: none;
-  }
-
-  /* Ambient blobs */
-  .blob {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.12;
+  /* faint scanlines over the whole desktop */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
     pointer-events: none;
-    z-index: 0;
-    animation: float 12s ease-in-out infinite;
-  }
-  .blob-1 { width: 600px; height: 600px; background: var(--neon-purple); top: -200px; left: -100px; animation-delay: 0s; }
-  .blob-2 { width: 500px; height: 500px; background: var(--neon-pink); bottom: -200px; right: -100px; animation-delay: -4s; }
-  .blob-3 { width: 400px; height: 400px; background: var(--neon-blue); top: 40%; left: 50%; animation-delay: -8s; }
-
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -40px) scale(1.05); }
-    66% { transform: translate(-20px, 30px) scale(0.95); }
+    z-index: 500;
+    background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(255,255,255,0.035) 3px 4px);
   }
 
-  /* NAV */
-  nav {
+  a { color: inherit; }
+  :focus-visible { outline: 3px dashed var(--white); outline-offset: 3px; }
+  .window :focus-visible, .dialog :focus-visible { outline-color: var(--black); }
+
+  /* ---------- menu bar ---------- */
+  .menubar {
     position: fixed; top: 0; left: 0; right: 0;
     z-index: 100;
-    padding: 1.5rem 4rem;
-    display: flex; justify-content: space-between; align-items: center;
-    backdrop-filter: blur(20px);
-    background: rgba(6,4,15,0.6);
-    border-bottom: 1px solid rgba(155,93,229,0.1);
+    height: 2.6rem;
+    background: var(--white);
+    color: var(--black);
+    border-bottom: 3px solid var(--black);
+    box-shadow: 0 2px 0 var(--white);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1rem;
+    font-family: var(--display);
+    font-size: 1rem;
   }
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    font-weight: 300;
-    letter-spacing: 0.2em;
-    background: linear-gradient(135deg, var(--soft-lavender), var(--neon-pink));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a {
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
+  .menubar nav { display: flex; align-items: center; gap: 0.25rem; }
+  .menubar .brand { font-weight: 700; margin-right: 0.75rem; text-decoration: none; }
+  .menubar nav a {
     text-decoration: none;
-    transition: color 0.3s;
+    padding: 0.2rem 0.7rem;
   }
-  .nav-links a:hover { color: var(--soft-lavender); }
+  .menubar nav a:hover, .menubar nav a:focus-visible { background: var(--black); color: var(--white); }
+  .clock { font-family: var(--body); font-size: 1.4rem; letter-spacing: 0.05em; }
 
-  /* Sections */
-  section { position: relative; z-index: 1; }
+  /* ---------- window chrome ---------- */
+  main { max-width: 1120px; margin: 0 auto; padding: 5.5rem 1.5rem 3rem; }
 
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
+  .window {
+    background: var(--white);
+    color: var(--black);
+    border: 3px solid var(--white);
+    outline: 3px solid var(--black);
+    outline-offset: -6px;
+    box-shadow: 8px 8px 0 rgba(255,255,255,0.28);
     display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    text-align: center;
-    padding: 8rem 2rem 4rem;
-    position: relative;
+    min-width: 0;
   }
-
-  .hero-eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--neon-pink);
-    margin-bottom: 2rem;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 0.3s;
-  }
-
-  .hero-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(5rem, 14vw, 12rem);
-    font-weight: 300;
-    line-height: 0.9;
-    letter-spacing: -0.02em;
-    opacity: 0;
-    animation: fadeUp 1.2s ease forwards 0.5s;
-  }
-  .hero-name .line-1 {
-    display: block;
-    background: linear-gradient(135deg, #fff 0%, var(--soft-lavender) 50%, var(--neon-purple) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .hero-name .line-2 {
-    display: block;
-    font-style: italic;
-    background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-purple) 60%, var(--neon-blue) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .hero-tagline {
-    margin-top: 2.5rem;
-    font-size: 0.9rem;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    max-width: 420px;
-    line-height: 1.8;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 0.9s;
-  }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 3rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards 1.5s;
-  }
-  .hero-scroll span {
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .scroll-line {
-    width: 1px;
-    height: 60px;
-    background: linear-gradient(to bottom, var(--neon-purple), transparent);
-    animation: scrollPulse 2s ease-in-out infinite;
-  }
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.3; transform: scaleY(1); }
-    50% { opacity: 1; transform: scaleY(1.1); }
-  }
-
-  /* ── ABOUT ── */
-  .about {
-    padding: 8rem 4rem;
-    max-width: 1100px;
-    margin: 0 auto;
+  .titlebar {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
+    grid-template-columns: 2.2rem 1fr 2.2rem;
     align-items: center;
+    height: 2.4rem;
+    border-bottom: 3px solid var(--black);
+    background: repeating-linear-gradient(to bottom, var(--white) 0 3px, var(--black) 3px 4px);
+    margin: 3px 3px 0;
   }
-  .about-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--neon-pink);
-    margin-bottom: 1.5rem;
-  }
-  .about-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 300;
-    line-height: 1.1;
-    margin-bottom: 2rem;
-  }
-  .about-title em {
-    font-style: italic;
-    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .about-body {
-    color: var(--muted);
-    line-height: 1.9;
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
-  }
-  .about-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-top: 3rem;
-  }
-  .stat {
-    padding: 1.5rem;
-    border: 1px solid rgba(155,93,229,0.2);
-    border-radius: 12px;
-    background: rgba(155,93,229,0.05);
-    backdrop-filter: blur(10px);
-  }
-  .stat-number {
-    font-family: 'Syne', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--neon-gold), var(--neon-pink));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-    margin-bottom: 0.4rem;
-  }
-  .stat-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .skills-cloud {
-    display: flex; flex-wrap: wrap; gap: 0.75rem;
-  }
-  .skill-tag {
-    padding: 0.4rem 1rem;
-    border-radius: 999px;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    border: 1px solid;
-    transition: all 0.3s;
-  }
-  .skill-tag:nth-child(3n+1) { border-color: rgba(155,93,229,0.4); color: var(--soft-lavender); background: rgba(155,93,229,0.08); }
-  .skill-tag:nth-child(3n+2) { border-color: rgba(247,37,133,0.4); color: #f7b8d0; background: rgba(247,37,133,0.08); }
-  .skill-tag:nth-child(3n+3) { border-color: rgba(76,201,240,0.4); color: #a8e9fa; background: rgba(76,201,240,0.08); }
-  .skill-tag:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(155,93,229,0.2); }
-
-  /* ── PROJECTS ── */
-  .projects {
-    padding: 6rem 4rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .section-header {
-    display: flex; align-items: baseline; gap: 2rem;
-    margin-bottom: 4rem;
-    border-bottom: 1px solid rgba(155,93,229,0.15);
-    padding-bottom: 2rem;
-  }
-  .section-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--neon-pink);
-  }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 300;
-  }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 1.5rem;
-  }
-
-  .project-card {
-    position: relative;
-    border: 1px solid rgba(155,93,229,0.15);
-    border-radius: 20px;
-    padding: 2.5rem;
-    background: rgba(26,15,53,0.4);
-    backdrop-filter: blur(20px);
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    cursor: none;
-  }
-  .project-card::before {
-    content: '';
-    position: absolute; inset: 0;
-    border-radius: 20px;
-    background: linear-gradient(135deg, rgba(155,93,229,0.08), rgba(247,37,133,0.05));
-    opacity: 0;
-    transition: opacity 0.4s;
-  }
-  .project-card:hover { transform: translateY(-6px); border-color: rgba(155,93,229,0.4); }
-  .project-card:hover::before { opacity: 1; }
-
-  .card-wide { grid-column: span 7; }
-  .card-narrow { grid-column: span 5; }
-  .card-third { grid-column: span 4; }
-  .card-full { grid-column: span 12; }
-
-  .project-number {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.65rem;
+  .titlebar h2, .titlebar h3 {
+    grid-column: 2;
+    justify-self: center;
+    background: var(--white);
+    padding: 0 0.8rem;
+    font-family: var(--display);
+    font-size: 1.05rem;
     font-weight: 700;
-    letter-spacing: 0.3em;
-    color: var(--neon-pink);
-    margin-bottom: 2rem;
-    opacity: 0.7;
+    line-height: 1.6;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden; text-overflow: ellipsis;
   }
-  .project-category {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.75rem;
+  .close-box {
+    grid-column: 1;
+    width: 1.35rem; height: 1.35rem;
+    margin-left: 0.6rem;
+    border: 3px solid var(--black);
+    background: var(--white);
+    cursor: pointer;
+    padding: 0;
   }
-  .project-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    font-weight: 400;
-    line-height: 1.15;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #fff, var(--soft-lavender));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .project-desc {
-    font-size: 0.82rem;
-    color: var(--muted);
-    line-height: 1.8;
-    margin-bottom: 2rem;
-  }
-  .project-tags {
-    display: flex; flex-wrap: wrap; gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-  .project-tag {
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    background: rgba(155,93,229,0.12);
-    border: 1px solid rgba(155,93,229,0.25);
-    color: var(--soft-lavender);
-  }
-  .project-role {
-    font-size: 0.72rem;
-    color: var(--neon-gold);
-    letter-spacing: 0.08em;
-    display: flex; align-items: center; gap: 0.5rem;
-  }
-  .project-role::before {
-    content: '';
-    display: inline-block;
-    width: 20px; height: 1px;
-    background: var(--neon-gold);
-  }
+  .close-box:hover { background: var(--black); }
+  .win-body { padding: 1.6rem 1.8rem 1.8rem; }
+  .window.collapsed .win-body { display: none; }
+  .window.collapsed .titlebar { border-bottom: 0; }
 
-  .card-accent {
-    position: absolute;
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.08;
-    pointer-events: none;
-    bottom: -60px; right: -60px;
-  }
-  .acc-purple { background: var(--neon-purple); }
-  .acc-pink { background: var(--neon-pink); }
-  .acc-blue { background: var(--neon-blue); }
-  .acc-gold { background: var(--neon-gold); }
+  .grid { display: grid; gap: 2.2rem; }
+  .section { margin-top: 3.5rem; }
 
-  /* ── CERTS & CLUBS ── */
-  .extras {
-    padding: 6rem 4rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-  }
-  .extras-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 300;
-    margin-bottom: 2rem;
-  }
-  .cert-item, .club-item {
-    display: flex; align-items: flex-start; gap: 1rem;
-    padding: 1.25rem 0;
-    border-bottom: 1px solid rgba(155,93,229,0.1);
-  }
-  .cert-icon {
-    width: 36px; height: 36px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; flex-shrink: 0;
-    background: rgba(155,93,229,0.12);
-    border: 1px solid rgba(155,93,229,0.2);
-  }
-  .cert-name {
-    font-size: 0.85rem;
-    color: var(--text);
-    line-height: 1.5;
-  }
-  .cert-year {
-    font-size: 0.7rem;
-    color: var(--neon-purple);
-    letter-spacing: 0.1em;
-    margin-top: 0.25rem;
-  }
+  /* ---------- hero ---------- */
+  .hero-window { max-width: 860px; margin: 1rem auto 0; }
+  .hero-body { text-align: center; padding: 2.5rem 1.8rem 2.6rem; }
+  .hero-hello { font-size: 1.5rem; margin-bottom: 0.4rem; }
 
-  /* ── CONTACT ── */
-  .contact {
-    padding: 8rem 4rem;
-    text-align: center;
+  .glitch {
     position: relative;
-  }
-  .contact-glow {
-    position: absolute;
-    width: 600px; height: 300px;
-    background: radial-gradient(ellipse, rgba(155,93,229,0.15), transparent 70%);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  }
-  .contact-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--neon-pink);
-    margin-bottom: 2rem;
-  }
-  .contact-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 8vw, 7rem);
-    font-weight: 300;
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(3.4rem, 12vw, 7.5rem);
     line-height: 0.95;
-    margin-bottom: 3rem;
+    letter-spacing: -0.02em;
+    color: var(--black);
   }
-  .contact-title em {
-    font-style: italic;
-    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink), var(--neon-blue));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .contact-links {
-    display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
-  }
-  .contact-link {
-    padding: 0.9rem 2.5rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: all 0.3s;
-  }
-  .contact-link.primary {
-    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
-    color: #fff;
-  }
-  .contact-link.primary:hover { transform: scale(1.04); box-shadow: 0 0 30px rgba(155,93,229,0.4); }
-  .contact-link.secondary {
-    border: 1px solid rgba(155,93,229,0.3);
-    color: var(--soft-lavender);
-    backdrop-filter: blur(10px);
-  }
-  .contact-link.secondary:hover { border-color: rgba(155,93,229,0.7); background: rgba(155,93,229,0.1); }
-
-  /* Footer */
-  footer {
-    padding: 2rem 4rem;
-    border-top: 1px solid rgba(155,93,229,0.1);
-    display: flex; justify-content: space-between; align-items: center;
-    position: relative; z-index: 1;
-  }
-  footer p {
-    font-size: 0.7rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-  }
-
-  /* Animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute; left: 0; top: 0;
+    width: 100%;
+    pointer-events: none;
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
   }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
+  .glitch::before { color: var(--glitch-c); mix-blend-mode: multiply; }
+  .glitch::after  { color: var(--glitch-m); mix-blend-mode: multiply; }
+  .glitch.burst::before { opacity: 1; animation: slice-a 0.45s steps(2, end); }
+  .glitch.burst::after  { opacity: 1; animation: slice-b 0.45s steps(2, end); }
+  @keyframes slice-a {
+    0%   { transform: translate(-6px, 2px); clip-path: inset(10% 0 60% 0); }
+    50%  { transform: translate(5px, -2px); clip-path: inset(55% 0 15% 0); }
+    100% { transform: translate(0, 0);      clip-path: inset(0 0 100% 0); }
+  }
+  @keyframes slice-b {
+    0%   { transform: translate(6px, -2px); clip-path: inset(65% 0 5% 0); }
+    50%  { transform: translate(-5px, 3px); clip-path: inset(20% 0 55% 0); }
+    100% { transform: translate(0, 0);      clip-path: inset(0 0 100% 0); }
+  }
+  .hero-roles { font-size: 1.6rem; margin: 1.4rem auto 0; max-width: 34rem; }
+  .hero-tagline { margin: 0.6rem auto 0; max-width: 30rem; font-size: 1.4rem; }
+  .cursor-blink::after { content: '_'; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--black);
+    background: var(--white);
+    border: 3px solid var(--black);
+    outline: 2px solid var(--black);
+    outline-offset: 2px;
+    border-radius: 8px;
+    padding: 0.35rem 1.3rem;
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--black); color: var(--white); }
+  .btn.default { box-shadow: inset 0 0 0 3px var(--white); background: var(--black); color: var(--white); }
+  .btn.default:hover { background: var(--white); color: var(--black); }
+  .hero-actions { margin-top: 2rem; display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ---------- about ---------- */
+  .about-grid { grid-template-columns: 1.15fr 0.85fr; align-items: start; }
+  .win-body h3.note-title {
+    font-family: var(--display);
+    font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .win-body p + p { margin-top: 0.9rem; }
+  .win-body p { max-width: 60ch; }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.6rem; }
+  .stat {
+    border: 3px solid var(--black);
+    padding: 0.8rem 0.9rem 0.7rem;
+    background:
+      radial-gradient(var(--black) 1px, transparent 1.2px) 0 0 / 4px 4px;
+    background-color: var(--white);
+  }
+  .stat span {
+    display: inline-block;
+    background: var(--white);
+    padding: 0 0.3rem;
+  }
+  .stat .num { font-family: var(--display); font-weight: 700; font-size: 2.4rem; line-height: 1.1; }
+  .stat .lbl { font-size: 1.15rem; margin-top: 0.2rem; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 0.55rem; list-style: none; }
+  .tags li {
+    border: 2px solid var(--black);
+    padding: 0.05rem 0.65rem;
+    font-size: 1.2rem;
+    background: var(--white);
+  }
+  .tags li:hover { background: var(--black); color: var(--white); }
+
+  /* ---------- projects ---------- */
+  .projects-grid { grid-template-columns: repeat(12, 1fr); gap: 2.2rem; }
+  .p-wide   { grid-column: span 7; }
+  .p-narrow { grid-column: span 5; }
+  .p-third  { grid-column: span 4; }
+
+  a.project { text-decoration: none; color: var(--black); }
+  a.project:hover .window-inner, a.project:focus-visible .window-inner { background: var(--black); color: var(--white); }
+  .project { height: 100%; }
+  .project .window { height: 100%; transition: none; }
+  .project:hover .window, .project:focus-visible .window { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 rgba(255,255,255,0.45); }
+
+  .thumb {
+    height: 9rem;
+    border-bottom: 3px solid var(--black);
+    margin: 0 3px;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .thumb .label {
+    background: var(--white);
+    border: 3px solid var(--black);
+    padding: 0.1rem 0.8rem;
+    font-family: var(--display);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .t-check { background: conic-gradient(var(--black) 25%, var(--white) 0 50%, var(--black) 0 75%, var(--white) 0) 0 0 / 12px 12px; }
+  .t-dots  { background: radial-gradient(var(--black) 2.2px, transparent 2.4px) 0 0 / 8px 8px, var(--white); }
+  .t-diag  { background: repeating-linear-gradient(45deg, var(--black) 0 3px, var(--white) 3px 9px); }
+  .t-bars  { background: repeating-linear-gradient(to right, var(--black) 0 6px, var(--white) 6px 12px); }
+  .t-fade  {
+    background:
+      linear-gradient(to right, var(--white), transparent 60%),
+      conic-gradient(var(--black) 25%, var(--white) 0 50%, var(--black) 0 75%, var(--white) 0) 0 0 / 6px 6px;
   }
 
-  /* Divider line */
-  .divider {
-    width: 100%; height: 1px;
-    background: linear-gradient(to right, transparent, rgba(155,93,229,0.3), transparent);
-    position: relative; z-index: 1;
-    margin: 0 4rem;
-    width: calc(100% - 8rem);
+  .project .win-body { display: flex; flex-direction: column; gap: 0.7rem; flex: 1; padding-top: 1.2rem; }
+  .p-cat { font-size: 1.2rem; opacity: 0.8; }
+  .p-title { font-family: var(--display); font-size: 1.8rem; line-height: 1.1; }
+  .p-desc { font-size: 1.25rem; }
+  .p-role { margin-top: auto; padding-top: 0.5rem; font-family: var(--display); font-size: 1rem; border-top: 2px dashed currentColor; }
+  .p-open { font-family: var(--display); font-size: 0.95rem; text-decoration: underline; }
+
+  /* ---------- activities (folders) ---------- */
+  .folders { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .folder {
+    display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.8rem 0.6rem;
+    color: var(--black);
+  }
+  .folder svg { width: 84px; height: 66px; shape-rendering: crispEdges; }
+  .folder .f-name { font-size: 1.3rem; line-height: 1.15; padding: 0 0.3rem; }
+  .folder .f-year { font-family: var(--display); font-size: 0.9rem; }
+  a.folder:hover .f-name, a.folder:focus-visible .f-name { background: var(--black); color: var(--white); }
+  a.folder:hover svg .fill, a.folder:focus-visible svg .fill { fill: var(--black); }
+  a.folder:hover svg .line, a.folder:focus-visible svg .line { stroke: var(--black); }
+
+  /* ---------- contact (alert dialog) ---------- */
+  .contact { display: flex; justify-content: center; }
+  .dialog {
+    width: min(640px, 100%);
+    background: var(--white);
+    color: var(--black);
+    border: 3px solid var(--black);
+    outline: 3px solid var(--white);
+    box-shadow: 8px 8px 0 rgba(255,255,255,0.28);
+    padding: 1.8rem 1.8rem 1.6rem;
+  }
+  .dialog-row { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .dialog svg { width: 64px; height: 64px; flex-shrink: 0; shape-rendering: crispEdges; }
+  .dialog h2 { font-family: var(--display); font-size: clamp(1.5rem, 3.2vw, 2rem); line-height: 1.15; }
+  .dialog p { margin-top: 0.6rem; }
+  .dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 1.1rem; margin-top: 1.6rem; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 3px solid var(--white);
+    margin-top: 4rem;
+    padding: 1.2rem 0 0.4rem;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 2rem;
+    font-size: 1.2rem;
+  }
+
+  /* ---------- reveal: dither-in, only on first view ---------- */
+  .js .reveal { opacity: 0; }
+  .js .reveal.visible { animation: pop 0.35s steps(4, end) forwards; }
+  @keyframes pop {
+    0%   { opacity: 0; clip-path: inset(0 0 100% 0); }
+    100% { opacity: 1; clip-path: inset(0 0 0 0); }
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 880px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .p-wide, .p-narrow, .p-third { grid-column: span 12; }
+    .folders { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    body { font-size: 1.25rem; }
+    .menubar nav a:not(.brand) { padding: 0.2rem 0.4rem; }
+    .menubar .clock { display: none; }
+    main { padding: 5rem 1rem 2rem; }
+    .win-body { padding: 1.2rem 1.1rem 1.4rem; }
+    .stats { grid-template-columns: 1fr; }
+    .dialog-row { flex-direction: column; }
+    .dialog-actions { justify-content: stretch; }
+    .dialog-actions .btn { width: 100%; text-align: center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .glitch.burst::before, .glitch.burst::after, .cursor-blink::after { animation: none; }
+    .js .reveal, .js .reveal.visible { opacity: 1; animation: none; clip-path: none; }
+    .project:hover .window { transform: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-trail" id="cursor-trail"></div>
+<!-- shared pixel icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="folder" viewBox="0 0 28 22">
+      <path class="fill" d="M1 4h9l2 3h15v14H1z" fill="#fff"/>
+      <path class="line" d="M1 4h9l2 3h15v14H1z" fill="none" stroke="#000" stroke-width="2"/>
+      <path class="line" d="M1 9h26" stroke="#000" stroke-width="1"/>
+    </symbol>
+  </defs>
+</svg>
 
-<canvas id="bg-canvas"></canvas>
-<div class="blob blob-1"></div>
-<div class="blob blob-2"></div>
-<div class="blob blob-3"></div>
+<header class="menubar">
+  <nav aria-label="Main">
+    <a class="brand" href="#top">◆ Ghadi.OS</a>
+    <a href="#about">About</a>
+    <a href="#projects">Work</a>
+    <a href="#activities">Clubs</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="clock" id="clock" aria-hidden="true">4:20:00 PM</div>
+</header>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">G · A</div>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#projects">Work</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+<main id="top">
 
-<!-- HERO -->
-<section class="hero">
-  <p class="hero-eyebrow">HCI Designer · Game Artist · Developer</p>
-  <h1 class="hero-name">
-    <span class="line-1">Ghadi</span>
-    <span class="line-2">Alqhtani</span>
-  </h1>
-  <p class="hero-tagline">Crafting experiences that live at the intersection of design, emotion, and technology.</p>
-  <div class="hero-scroll">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section class="about" id="about">
-  <div class="reveal">
-    <p class="about-label">About</p>
-    <h2 class="about-title">Design is<br><em>a language</em><br>I speak fluently.</h2>
-    <p class="about-body">3rd-year Human-Computer Interaction student at Umm Al-Qura University. I work across UX/UI design, game design, motion graphics, and front-end development — always drawn to the feeling a well-crafted experience creates.</p>
-    <p class="about-body">From pixel art to information architecture, I believe every detail carries intention.</p>
-    <div class="about-stats">
-      <div class="stat">
-        <div class="stat-number">5+</div>
-        <div class="stat-label">Projects Shipped</div>
+  <!-- HERO -->
+  <section class="hero" aria-label="Introduction">
+    <div class="window hero-window">
+      <div class="titlebar">
+        <button class="close-box" aria-label="Collapse window"></button>
+        <h2>Hello.txt</h2>
       </div>
-      <div class="stat">
-        <div class="stat-number">3.48</div>
-        <div class="stat-label">GPA / 4.0</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">10</div>
-        <div class="stat-label">Days — Pillow Castle</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">80+</div>
-        <div class="stat-label">Research Participants</div>
+      <div class="win-body hero-body">
+        <p class="hero-hello">Hi, I'm</p>
+        <h1 class="glitch" id="name" data-text="Ghadi Alqhtani">Ghadi Alqhtani</h1>
+        <p class="hero-roles">HCI designer, game artist and developer.</p>
+        <p class="hero-tagline cursor-blink">Crafting experiences where design, emotion and technology meet</p>
+        <div class="hero-actions">
+          <a class="btn default" href="#projects">Open work</a>
+          <a class="btn" href="#contact">Say hi</a>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="reveal">
-    <p class="about-label" style="margin-bottom:1.5rem;">Skills</p>
-    <div class="skills-cloud">
-      <span class="skill-tag">Figma</span>
-      <span class="skill-tag">Adobe Photoshop</span>
-      <span class="skill-tag">Adobe Illustrator</span>
-      <span class="skill-tag">After Effects</span>
-      <span class="skill-tag">UX Research</span>
-      <span class="skill-tag">Information Architecture</span>
-      <span class="skill-tag">Usability Testing</span>
-      <span class="skill-tag">Card Sorting</span>
-      <span class="skill-tag">Tree Testing</span>
-      <span class="skill-tag">Flutter · Dart</span>
-      <span class="skill-tag">HTML · CSS · JS</span>
-      <span class="skill-tag">Firebase</span>
-      <span class="skill-tag">SQL</span>
-      <span class="skill-tag">Java</span>
-      <span class="skill-tag">Game Design</span>
-      <span class="skill-tag">Pixel Art</span>
-      <span class="skill-tag">2D Animation</span>
-      <span class="skill-tag">Motion Graphics</span>
-      <span class="skill-tag">Visual Design</span>
-      <span class="skill-tag">Interaction Design</span>
-      <span class="skill-tag">Wireframing</span>
-      <span class="skill-tag">Unity (Beginner)</span>
-    </div>
-  </div>
-</section>
+  </section>
 
-<div class="divider"></div>
-
-<!-- PROJECTS -->
-<section class="projects" id="projects">
-  <div class="section-header reveal">
-    <span class="section-label">Selected Work</span>
-    <h2 class="section-title">Projects</h2>
-  </div>
-
-  <div class="projects-grid">
-
-    <!-- Pillow Castle — featured wide -->
-    <a href="https://lammelione.itch.io/pillow-castle" target="_blank" class="project-card card-wide reveal" style="text-decoration:none;">
-      <div class="card-accent acc-pink"></div>
-      <div class="project-number">01 — Click to View ↗</div>
-      <p class="project-category">Game Design · Pixel Art · Game Jam</p>
-      <h3 class="project-title">Pillow Castle</h3>
-      <p class="project-desc">A short 2D pixel art game built in exactly 10 days for SheJams 2025. Two endings, original illustrations, time-pressure mechanics, and the nostalgic rush of building a pillow fort before mama cleans up. Shipped with a 5-person multidisciplinary team and published on itch.io.</p>
-      <div class="project-tags">
-        <span class="project-tag">Game Design</span>
-        <span class="project-tag">Pixel Art</span>
-        <span class="project-tag">GDD</span>
-        <span class="project-tag">SheJams 2025</span>
-        <span class="project-tag">itch.io</span>
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="grid about-grid">
+      <div class="window reveal">
+        <div class="titlebar">
+          <button class="close-box" aria-label="Collapse window"></button>
+          <h2>About</h2>
+        </div>
+        <div class="win-body">
+          <h3 class="note-title">Design is a language I speak fluently.</h3>
+          <p>3rd-year Human-Computer Interaction student at Umm Al-Qura University. I work across UX/UI design, game design, motion graphics and front-end development, always drawn to the feeling a well-crafted experience creates.</p>
+          <p>From pixel art to information architecture, I believe every detail carries intention.</p>
+          <div class="stats">
+            <div class="stat"><span class="num">5+</span><br><span class="lbl">Projects shipped</span></div>
+            <div class="stat"><span class="num">3.48</span><br><span class="lbl">GPA out of 4.0</span></div>
+            <div class="stat"><span class="num">10</span><br><span class="lbl">Days to make Pillow Castle</span></div>
+            <div class="stat"><span class="num">80+</span><br><span class="lbl">Research participants</span></div>
+          </div>
+        </div>
       </div>
-      <p class="project-role">Game Designer & Pixel Artist</p>
-    </a>
 
-    <!-- IA Marsool -->
-    <a href="https://drive.google.com/file/d/1aa-miLPS_rr4WhGuPbIQdSCxSg0YD-lF/view?usp=sharing" target="_blank" class="project-card card-narrow reveal" style="text-decoration:none;">
-      <div class="card-accent acc-blue"></div>
-      <div class="project-number">02 — Click to View ↗</div>
-      <p class="project-category">Information Architecture · UX Research</p>
-      <h3 class="project-title">IA Redesign — Marsool</h3>
-      <p class="project-desc">3-phase IA study on the Marsool grocery delivery app. Surveyed 80+ users, ran card sorting sessions, performed tree testing via UX Tweak, and redesigned the navigation sitemap and wireframes.</p>
-      <div class="project-tags">
-        <span class="project-tag">Card Sorting</span>
-        <span class="project-tag">Tree Testing</span>
-        <span class="project-tag">Wireframing</span>
-        <span class="project-tag">Competitive Analysis</span>
-      </div>
-      <p class="project-role">IA Designer & UX Researcher</p>
-    </a>
-
-    <a href="https://www.figma.com/design/6K4PDmwMUJ0x5uS0XlVUqU/Better-Expense?node-id=0-1&p=f&t=2uUN5NCQTiQHr69M-0" target="_blank" class="project-card card-third reveal" style="text-decoration:none;">
-      <div class="card-accent acc-gold"></div>
-      <div class="project-number">03 — Click to View ↗</div>
-      <p class="project-category">UI/UX Design · Figma</p>
-      <h3 class="project-title">Better Expense</h3>
-      <p class="project-desc">End-to-end mobile UI for a personal finance app. From wireframes to high-fidelity Figma prototype — budget dashboards, expense tracking, and financial reports.</p>
-      <div class="project-tags">
-        <span class="project-tag">Figma</span>
-        <span class="project-tag">Mobile UX</span>
-        <span class="project-tag">Prototyping</span>
-      </div>
-      <p class="project-role">UI/UX Designer</p>
-    </a>
-
-    <!-- Gaming Guide -->
-    <a href="https://ghadialq.github.io/Gaming-guide/" target="_blank" class="project-card card-third reveal" style="text-decoration:none;">
-      <div class="card-accent acc-blue"></div>
-      <div class="project-number">04 — Click to View ↗</div>
-      <p class="project-category">Web Design · Front-End Dev</p>
-      <h3 class="project-title">Gaming Guide</h3>
-      <p class="project-desc">An 8-page gaming platform with login, community, leaderboard, and stats pages. Custom pixel typography, cohesive visual system, and interactive front-end features.</p>
-      <div class="project-tags">
-        <span class="project-tag">HTML · CSS · JS</span>
-        <span class="project-tag">Visual Design</span>
-        <span class="project-tag">Web Dev</span>
-      </div>
-      <p class="project-role">Web Designer & Developer</p>
-    </a>
-
-    <!-- Expense System -->
-    <a href="https://drive.google.com/file/d/1f7QHxVlY1OReEgHz-uT1Nyqfib3xu14M/view?usp=drive_link" target="_blank" class="project-card card-third reveal" style="text-decoration:none;">
-      <div class="card-accent acc-purple"></div>
-      <div class="project-number">05 — Click to View ↗</div>
-      <p class="project-category">UX Analysis · Systems Design</p>
-      <h3 class="project-title">Personal Expense System</h3>
-      <p class="project-desc">Requirements engineering for a mobile budget management app. Authored FR05–08, designed Active Repository Architecture, and contributed to UML Use Case Diagram.</p>
-      <div class="project-tags">
-        <span class="project-tag">UML</span>
-        <span class="project-tag">Requirements Eng.</span>
-        <span class="project-tag">System Architecture</span>
-      </div>
-      <p class="project-role">Requirements Engineer & UX Analyst</p>
-    </a>
-
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ACTIVITIES ONLY -->
-<section class="extras" id="extras">
-  <div class="reveal" style="grid-column: span 2; margin-bottom: 1rem;">
-    <h2 class="extras-title">Extracurricular Activities</h2>
-  </div>
-  <div class="reveal">
-    <a href="https://drive.google.com/drive/folders/1L4G4Y-wyaWr2hF30eRvTpkjT4sKaNxQQ?usp=drive_link" target="_blank" class="club-item" style="text-decoration:none; color:inherit; display:flex; align-items:flex-start; gap:1rem; padding:1.25rem 0; border-bottom:1px solid rgba(155,93,229,0.1);">
-      <div class="cert-icon">🎨</div>
-      <div>
-        <div class="cert-name">Media & Graphic Designer — Computer Club, UQU ↗</div>
-        <div class="cert-year">2024 – Present</div>
-      </div>
-    </a>
-    <a href="https://drive.google.com/drive/folders/1IwGmMXI2bZOHelEacTHTtg_dnHmoiTQZ?usp=drive_link" target="_blank" class="club-item" style="text-decoration:none; color:inherit; display:flex; align-items:flex-start; gap:1rem; padding:1.25rem 0; border-bottom:1px solid rgba(155,93,229,0.1);">
-      <div class="cert-icon">📰</div>
-      <div>
-        <div class="cert-name">Newsletter Designer — Al-Hasouby, Computer Club ↗</div>
-        <div class="cert-year">2024 – Present</div>
-      </div>
-    </a>
-  </div>
-  <div class="reveal">
-    <div class="club-item">
-      <div class="cert-icon">🕹️</div>
-      <div>
-        <div class="cert-name">Game Designer & Developer — Game Developers Club, UQU</div>
-        <div class="cert-year">2025 – Present</div>
+      <div class="window reveal">
+        <div class="titlebar">
+          <button class="close-box" aria-label="Collapse window"></button>
+          <h2>Skills</h2>
+        </div>
+        <div class="win-body">
+          <ul class="tags">
+            <li>Figma</li><li>Adobe Photoshop</li><li>Adobe Illustrator</li><li>After Effects</li>
+            <li>UX Research</li><li>Information Architecture</li><li>Usability Testing</li>
+            <li>Card Sorting</li><li>Tree Testing</li><li>Flutter and Dart</li><li>HTML, CSS, JS</li>
+            <li>Firebase</li><li>SQL</li><li>Java</li><li>Game Design</li><li>Pixel Art</li>
+            <li>2D Animation</li><li>Motion Graphics</li><li>Visual Design</li>
+            <li>Interaction Design</li><li>Wireframing</li><li>Unity (beginner)</li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <!-- PROJECTS -->
+  <section class="section" id="projects">
+    <div class="grid projects-grid">
 
-<!-- CONTACT -->
-<section class="contact" id="contact">
-  <div class="contact-glow"></div>
-  <p class="contact-label reveal">Let's Connect</p>
-  <h2 class="contact-title reveal">
-    Let's build<br><em>something</em><br>together.
-  </h2>
-  <div class="contact-links reveal">
-    <a class="contact-link primary" href="mailto:ghadi.alqhtaini@gmail.com">ghadi.alqhtaini@gmail.com</a>
-    <a class="contact-link secondary" href="#">+966 50 606 4022</a>
-  </div>
-</section>
+      <a class="project p-wide reveal" href="https://lammelione.itch.io/pillow-castle" target="_blank" rel="noopener">
+        <div class="window">
+          <div class="titlebar"><span class="close-box" style="pointer-events:none"></span><h3>Pillow_Castle.exe</h3></div>
+          <div class="thumb t-check"><span class="label">2D pixel game</span></div>
+          <div class="win-body">
+            <p class="p-cat">Game design, pixel art, game jam</p>
+            <h3 class="p-title">Pillow Castle</h3>
+            <p class="p-desc">A short 2D pixel art game built in exactly 10 days for SheJams 2025. Two endings, original illustrations, time-pressure mechanics, and the nostalgic rush of building a pillow fort before mama cleans up. Shipped with a 5-person multidisciplinary team and published on itch.io.</p>
+            <ul class="tags"><li>Game Design</li><li>Pixel Art</li><li>GDD</li><li>SheJams 2025</li><li>itch.io</li></ul>
+            <p class="p-role">Game Designer and Pixel Artist</p>
+            <span class="p-open">Open on itch.io</span>
+          </div>
+        </div>
+      </a>
 
-<footer>
-  <p>© 2025 Ghadi Alqhtani</p>
-  <p>HCI · UQU · Mecca, Saudi Arabia</p>
-</footer>
+      <a class="project p-narrow reveal" href="https://drive.google.com/file/d/1aa-miLPS_rr4WhGuPbIQdSCxSg0YD-lF/view?usp=sharing" target="_blank" rel="noopener">
+        <div class="window">
+          <div class="titlebar"><span class="close-box" style="pointer-events:none"></span><h3>Marsool_IA.pdf</h3></div>
+          <div class="thumb t-dots"><span class="label">Sitemap</span></div>
+          <div class="win-body">
+            <p class="p-cat">Information architecture, UX research</p>
+            <h3 class="p-title">IA Redesign for Marsool</h3>
+            <p class="p-desc">3-phase IA study on the Marsool grocery delivery app. Surveyed 80+ users, ran card sorting sessions, performed tree testing via UX Tweak, and redesigned the navigation sitemap and wireframes.</p>
+            <ul class="tags"><li>Card Sorting</li><li>Tree Testing</li><li>Wireframing</li><li>Competitive Analysis</li></ul>
+            <p class="p-role">IA Designer and UX Researcher</p>
+            <span class="p-open">Open the study</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="project p-third reveal" href="https://www.figma.com/design/6K4PDmwMUJ0x5uS0XlVUqU/Better-Expense?node-id=0-1&p=f&t=2uUN5NCQTiQHr69M-0" target="_blank" rel="noopener">
+        <div class="window">
+          <div class="titlebar"><span class="close-box" style="pointer-events:none"></span><h3>Better_Expense.fig</h3></div>
+          <div class="thumb t-diag"><span class="label">Mobile UI</span></div>
+          <div class="win-body">
+            <p class="p-cat">UI/UX design, Figma</p>
+            <h3 class="p-title">Better Expense</h3>
+            <p class="p-desc">End-to-end mobile UI for a personal finance app. From wireframes to high-fidelity Figma prototype: budget dashboards, expense tracking and financial reports.</p>
+            <ul class="tags"><li>Figma</li><li>Mobile UX</li><li>Prototyping</li></ul>
+            <p class="p-role">UI/UX Designer</p>
+            <span class="p-open">Open in Figma</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="project p-third reveal" href="https://ghadialq.github.io/Gaming-guide/" target="_blank" rel="noopener">
+        <div class="window">
+          <div class="titlebar"><span class="close-box" style="pointer-events:none"></span><h3>Gaming_Guide.html</h3></div>
+          <div class="thumb t-bars"><span class="label">8 pages</span></div>
+          <div class="win-body">
+            <p class="p-cat">Web design, front-end development</p>
+            <h3 class="p-title">Gaming Guide</h3>
+            <p class="p-desc">An 8-page gaming platform with login, community, leaderboard and stats pages. Custom pixel typography, a cohesive visual system and interactive front-end features.</p>
+            <ul class="tags"><li>HTML, CSS, JS</li><li>Visual Design</li><li>Web Dev</li></ul>
+            <p class="p-role">Web Designer and Developer</p>
+            <span class="p-open">Open the site</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="project p-third reveal" href="https://drive.google.com/file/d/1f7QHxVlY1OReEgHz-uT1Nyqfib3xu14M/view?usp=drive_link" target="_blank" rel="noopener">
+        <div class="window">
+          <div class="titlebar"><span class="close-box" style="pointer-events:none"></span><h3>Expense_System.pdf</h3></div>
+          <div class="thumb t-fade"><span class="label">UML</span></div>
+          <div class="win-body">
+            <p class="p-cat">UX analysis, systems design</p>
+            <h3 class="p-title">Personal Expense System</h3>
+            <p class="p-desc">Requirements engineering for a mobile budget management app. Authored FR05 to FR08, designed the Active Repository Architecture, and contributed to the UML use case diagram.</p>
+            <ul class="tags"><li>UML</li><li>Requirements Eng.</li><li>System Architecture</li></ul>
+            <p class="p-role">Requirements Engineer and UX Analyst</p>
+            <span class="p-open">Open the document</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ACTIVITIES -->
+  <section class="section" id="activities">
+    <div class="window reveal">
+      <div class="titlebar">
+        <button class="close-box" aria-label="Collapse window"></button>
+        <h2>Extracurricular activities</h2>
+      </div>
+      <div class="win-body">
+        <div class="folders">
+          <a class="folder" href="https://drive.google.com/drive/folders/1L4G4Y-wyaWr2hF30eRvTpkjT4sKaNxQQ?usp=drive_link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 28 22" aria-hidden="true"><use href="#folder"/></svg>
+            <span class="f-name">Media and graphic designer, Computer Club, UQU</span>
+            <span class="f-year">2024 to present</span>
+          </a>
+          <a class="folder" href="https://drive.google.com/drive/folders/1IwGmMXI2bZOHelEacTHTtg_dnHmoiTQZ?usp=drive_link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 28 22" aria-hidden="true"><use href="#folder"/></svg>
+            <span class="f-name">Newsletter designer, Al-Hasouby, Computer Club</span>
+            <span class="f-year">2024 to present</span>
+          </a>
+          <div class="folder">
+            <svg viewBox="0 0 28 22" aria-hidden="true"><use href="#folder"/></svg>
+            <span class="f-name">Game designer and developer, Game Developers Club, UQU</span>
+            <span class="f-year">2025 to present</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section contact" id="contact">
+    <div class="dialog reveal" role="group" aria-labelledby="contact-title">
+      <div class="dialog-row">
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 1 L15 14 H1 Z" fill="#fff" stroke="#000" stroke-width="1.2" stroke-linejoin="miter"/>
+          <rect x="7.2" y="5.4" width="1.6" height="4.6" fill="#000"/>
+          <rect x="7.2" y="11" width="1.6" height="1.6" fill="#000"/>
+        </svg>
+        <div>
+          <h2 id="contact-title">Are you sure you want to leave without saying hi?</h2>
+          <p>Let's build something together. Send me an email or call.</p>
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <a class="btn" href="tel:+966506064022">+966 50 606 4022</a>
+        <a class="btn default" href="mailto:ghadi.alqhtaini@gmail.com">Email me</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2025 Ghadi Alqhtani</span>
+    <span>HCI student, UQU, Mecca, Saudi Arabia</span>
+  </footer>
+</main>
 
 <script>
-  // Cursor
-  const cursor = document.getElementById('cursor');
-  const trail = document.getElementById('cursor-trail');
-  let mx = 0, my = 0, tx = 0, ty = 0;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx - 6 + 'px';
-    cursor.style.top  = my - 6 + 'px';
+  document.documentElement.classList.add('js');
+
+  // menu bar clock
+  const clock = document.getElementById('clock');
+  function tick() {
+    clock.textContent = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+  }
+  tick(); setInterval(tick, 1000);
+
+  // collapse / expand windows with the close box
+  document.querySelectorAll('button.close-box').forEach(btn => {
+    btn.addEventListener('click', () => btn.closest('.window').classList.toggle('collapsed'));
   });
-  (function animTrail() {
-    tx += (mx - tx) * 0.12;
-    ty += (my - ty) * 0.12;
-    trail.style.left = tx - 18 + 'px';
-    trail.style.top  = ty - 18 + 'px';
-    requestAnimationFrame(animTrail);
-  })();
 
-  // Glitter canvas
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+  // one glitch burst on load, then again when the name is hovered or focused
+  const name = document.getElementById('name');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function burst() {
+    if (reduce) return;
+    name.classList.remove('burst');
+    void name.offsetWidth;
+    name.classList.add('burst');
   }
-  resize();
-  window.addEventListener('resize', resize);
+  setTimeout(burst, 500);
+  name.addEventListener('mouseenter', burst);
 
-  const colors = ['#9b5de5','#f72585','#4cc9f0','#ffd166','#c8b8f8'];
-
-  for (let i = 0; i < 120; i++) {
-    particles.push({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      r: Math.random() * 1.5 + 0.3,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      alpha: Math.random() * 0.5 + 0.1,
-      twinkle: Math.random() * Math.PI * 2
-    });
+  // dither-in reveal, once per element
+  const items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    items.forEach(el => io.observe(el));
+  } else {
+    items.forEach(el => el.classList.add('visible'));
   }
-
-  function drawParticles() {
-    ctx.clearRect(0, 0, W, H);
-    const t = Date.now() * 0.001;
-    particles.forEach(p => {
-      p.twinkle += 0.02;
-      const alpha = p.alpha * (0.5 + 0.5 * Math.sin(p.twinkle));
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + Math.round(alpha * 255).toString(16).padStart(2,'0');
-      ctx.fill();
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0) p.x = W;
-      if (p.x > W) p.x = 0;
-      if (p.y < 0) p.y = H;
-      if (p.y > H) p.y = 0;
-    });
-    requestAnimationFrame(drawParticles);
-  }
-  drawParticles();
-
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
