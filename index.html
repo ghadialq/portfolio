@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ghadi Alqhtani, Portfolio</title>
+ <link rel="icon" type="image/png" href="assets/logo.png">
 <meta name="description" content="Portfolio of Ghadi Alqhtani: HCI student, UX/UI designer, pixel artist and game designer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -354,6 +355,8 @@
 .link-tile .l-handle { font-size: 1.15rem; opacity: 0.85; }
 .link-tile:hover, .link-tile:focus-visible { background: var(--black); color: var(--white); }
 .link-tile:hover .l-handle, .link-tile:focus-visible .l-handle { opacity: 1; }
+ .brand-logo { display: block; height: 32px; width: auto; image-rendering: pixelated; }
+.menubar .brand { display: flex; align-items: center; }
 </style>
 </head>
 <body>
@@ -375,8 +378,7 @@
 
 <header class="menubar">
   <nav aria-label="Main">
-    <a class="brand" href="#top">◆ Ghadi</a>
-    <a href="#about">About</a>
+<a class="brand" href="#top"><img class="brand-logo" src="assets/logo.png" alt="Ghadi"></a>    <a href="#about">About</a>
     <a href="#games">Games</a>
     <a href="#design">Design</a>
     <a href="#ux">UX</a>
